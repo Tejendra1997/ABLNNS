@@ -12,3 +12,10 @@ Eval APIGEE
 • By default ga only internal ga matrame develop chesina API proxies ni access cheyagalam okavele external ga access cheyali ante LOAD BALANCER ni configure chyali.
 • At a time only 2 env’s matrame create cheyagalam.
 • Run time instance 1
+
+
+
+
+For ApiProxy Design: https://www.googlecloudcommunity.com/gc/Cloud-Product-Articles/Recommended-Shared-Flows-For-All-Proxies/ta-p/77649
+
+For Why are KVMs handled differently in Apigee Edge vs. Apigee hybrid and Apigee X: https://www.googlecloudcommunity.com/gc/Cloud-Product-Articles/Providing-KVM-Content-APIs-for-Apigee-X-and-hybrid/ta-p/76054

@@ -1,0 +1,40 @@
+ye vishyam ina anni vaipula alochinchakunte danini nenu padakam ananu swapnam antaanu
+
+baahuvulu balamgaa unte adhi shakti, manasu balamga unte adi saamardhyamu, aathma balamga unte adi souryamu (anga raju karna ki nshakti mariyu samrdhyamu unai).
+
+Ya paapam cheyadam valla draupadi ki antha avamaanam labinchindi, alaane ye paapam cheyadam valla abhimanyudu maranichadu, alaana ye paapam cheyadam valla pandavulu vaala kodukuli andarni poggotukunaaru.
+
+
+
+katha saaram gnyanajyothi
+
+pollution certificate, rc and insurance
+
+
+==============================
+1
+==
+• Icha, Aasha, Aakaanksha, Aapeksha veeti alambanathone maanava jeevitham konasagutundi, Kaadha?
+  Evaraina mimalni prasnichaaru anukondi meeru evaru ani? daniki mee samadaanam ela untundi, meere alochinchandi.
+  Meeku ventane spashatamavtundi mee ichale mee jeevitham gurunchi vyakyanistai ani. Aasinchindi pondina tarvaata labinche saphalatha leda dani kolpoina tarvaata migile viphalatha, idhe mee asthithvam.
+  Kondari jeevitaalu ela untai ante vaalu lolopale kringikrusinchipotaaru endukante vaalu tama ichalani champukoleka potharu. Ichalu vaalanu ela nirdhesisthai ante vaalu mrudatushna kosam mrugala parugulu teestu untaaru. INAPATIKI EE I HIKA ICHALA GARBHAME GNYANAMRUTAANI PRSAADISTUNDI ELA ANTE ICHALU ASAMPOORNAMGA UNA, NERAVERAKUNA APUDU AKADA NUNCHE GNYANA KIRANAALU UTHPANAMAVTOI MAANAVULA ANTHARAATMALO.
+  kadu ee kathalo unadi KEVELAM ichala nuduma sangarshana kadu, hridayam lo ni aakanksha virudhyala dwara uthpanamaye bayankara raktha paathamu kadu. EE KATHA SAARAM GADAANDHAKARMAINA GARBHAM NUNCHI UDAYISTUNA GNYANA JYOTHI.
+  nenu vasudeva suthudanu mee andarni ee gnyana darsana yaatraku aahvanistunanu, INDULO JEEVANA MARMAM TELUSTUNDI, MAANAVA DARMAM ENTO TELUSTUNDI, 
+  
+  
+  manasika vyadha nunchi bayatapadaleni manishi evaraina sare athanu ithara baadalani ela ardam chesukogalaru.
+  
+  Darmamu prema edo oka danine yenchukovali ante apudu edi yenchukovali? dharmam suryudu lantidi mari prema chandrudu lantidi, nv chandrudini sww
+  
+  Thavu vs porapaatu ==> Theliyaka. cheste thapu telisi chesete porapaatu
+  ASASASADSDSDS
+  
+  Bhagavathgita
+  =============
+  **Arjuna**:
+  Naku  na gandeevam ethe antha shakthi ledu, naku kavelem BHAYAANAKA VIDWAMSAME kanipistundi ipudu. Naku ipudu etuvanti AVAMAANA BARAM, PRATHIKAARAM, ANYAAYAM jarigindi ane alochana gani karanam gani emi ledu ipudu naku, emi ledu... ee BAYAANAKA VIDWAMSAANI modalu pettadaniki. 
+  VADHU MADHAVA, MANAKI EE YUDHAM VADHU.
+
+**Krishna**:
+VIDWAMASAME NAVA NIRMAANANIKI KAARANAM PARDHA, MOKKAKI UNA OKA SHAAKANI KANDISTE RENDU SHAAKALU UDBAVISTAI.
+NUVU NETI VIDWAMSAANIKI ENDUKU BAYAPADUTUNAAV, **REPU NAVA NIRMAA**

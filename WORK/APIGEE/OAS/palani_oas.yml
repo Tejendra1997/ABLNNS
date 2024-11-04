@@ -1,0 +1,3300 @@
+openapi: 3.0.3
+info:
+  title: Credit Reports V1 API
+  description: "#  Retrieve Credit Reports from Lexus-Nexus\n\n\n\
+    Auth provider for this API is Azure AD :- submit a request to get access to this\
+    \ api \n\nPre-prod API Provider Azure ID :- 896abfa1-3a94-44a6-bc69-1b74f528f9eb\n\
+    \nPre-prod API Provider Azure Name :- API-Credit-Reports-API-V1-PreProd\n\n\
+    Production API Provider Azure ID :- dcbf3e64-3eca-43a4-b112-77e90a2b2cf2\n\nProduction\
+    \ API Provider Azure Name :- API-Credit-Reports-API-V1-Prod\n\nAPI Service\
+    \ Now Support Group :- API Management.\n"
+  version: 3.0.0
+  termsOfService: https://amfam.sharepoint.com/sites/EPP/SitePages/Enterprise-Application-Security-Standard.aspx
+  contact:
+    name: API Managment Team
+    email: apimanagement@amfam.com
+    url: https://amfament.atlassian.net/wiki/spaces/AAM/overview?homepageId=15451892260
+  license:
+    name: Amfam Group IP License
+    url: https://amfam.sharepoint.com/sites/EPP/SitePages/Enterprise-Application-Security-Standard.aspx
+externalDocs:
+  description: GitLab Repo
+  url: https://gitlab.com/amfament/ent/ie/api-management-platform/layer7-apis
+servers:
+  - url: https://api-dev.af1platform.com/ent-creditreports/v1
+    description: Apigee DEV (External)
+  - url: https://api-int.af1platform.com/ent-creditreports/v1
+    description: Apigee INT (External)
+  - url: https://api-perf.af1platform.com/ent-creditreports/v1
+    description: Apigee PERF (External)
+  - url: https://api-qa.af1platform.com/ent-creditreports/v1
+    description: Apigee QA (External)
+  - url: https://api-staging.af1platform.com/ent-creditreports/v1
+    description: Apigee Staging (External)
+  - url: https://api.af1platform.com/ent-creditreports/v1
+    description: Apigee PROD (External)
+security:
+  - AzureAD: []
+tags:
+  - name: Operations
+paths:
+  /ping:
+    get:
+      tags:
+        - Operations
+      security:
+        - BasicAuth: []
+      description: ping.
+      operationId: ping
+      summary: ping
+      parameters:
+        - $ref: "#/components/parameters/hdrAfeTraceId"
+        - $ref: "#/components/parameters/hdrAfeSessionId"
+        - $ref: "#/components/parameters/hdrAfeSourceId"
+        - $ref: "#/components/parameters/hdrAfeProductLine"
+        - $ref: "#/components/parameters/hdrAfiAppName"
+        - $ref: "#/components/parameters/hdrAfeApiKey"
+        - name: pingLevel
+          in: query
+          description: Ping level.
+          required: true
+          schema:
+            type: string
+            default: None
+            enum:
+              - None
+              - Component
+      responses:
+        "200":
+          $ref: "#/components/responses/pingResponse"
+        "400":
+          $ref: "#/components/responses/ErrorBadRequest"
+        "401":
+          $ref: "#/components/responses/ErrorUnauthorized"
+        "403":
+          $ref: "#/components/responses/ErrorForbidden"
+        "404":
+          $ref: "#/components/responses/ErrorNotFound"
+        "405":
+          $ref: "#/components/responses/ErrorMethodNotAllowed"
+        "413":
+          $ref: "#/components/responses/ErrorContentTooLarge"
+        "429":
+          $ref: "#/components/responses/ErrorTooManyRequests"
+        "500":
+          $ref: "#/components/responses/ErrorInternalServerError"
+        "502":
+          $ref: "#/components/responses/ErrorBadGateway"
+        "504":
+          $ref: "#/components/responses/ErrorGatewayTimeout"
+  /ping2:
+    get:
+      tags:
+        - Operations
+      security:
+        - AzureAD: []
+      description: ping.
+      operationId: ping2
+      summary: ping
+      parameters:
+        - $ref: "#/components/parameters/hdrAfeTraceId"
+        - $ref: "#/components/parameters/hdrAfeSessionId"
+        - $ref: "#/components/parameters/hdrAfeSourceId"
+        - $ref: "#/components/parameters/hdrAfeProductLine"
+        - $ref: "#/components/parameters/hdrAfiAppName"
+        - $ref: "#/components/parameters/hdrAfeApiKey"
+        - name: pingLevel
+          in: query
+          description: Ping level.
+          required: true
+          schema:
+            type: string
+            default: None
+            enum:
+              - None
+              - Component
+      responses:
+        "200":
+          $ref: "#/components/responses/pingResponse"
+        "400":
+          $ref: "#/components/responses/ErrorBadRequest"
+        "401":
+          $ref: "#/components/responses/ErrorUnauthorized"
+        "403":
+          $ref: "#/components/responses/ErrorForbidden"
+        "404":
+          $ref: "#/components/responses/ErrorNotFound"
+        "405":
+          $ref: "#/components/responses/ErrorMethodNotAllowed"
+        "413":
+          $ref: "#/components/responses/ErrorContentTooLarge"
+        "429":
+          $ref: "#/components/responses/ErrorTooManyRequests"
+        "500":
+          $ref: "#/components/responses/ErrorInternalServerError"
+        "502":
+          $ref: "#/components/responses/ErrorBadGateway"
+        "504":
+          $ref: "#/components/responses/ErrorGatewayTimeout"
+  /ping3:
+    get:
+      tags:
+        - Operations
+      security:
+        - ApikeyAuth: []
+      description: ping.
+      operationId: ping3
+      summary: ping
+      parameters:
+        - $ref: "#/components/parameters/hdrAfeTraceId"
+        - $ref: "#/components/parameters/hdrAfeSessionId"
+        - $ref: "#/components/parameters/hdrAfeSourceId"
+        - $ref: "#/components/parameters/hdrAfeProductLine"
+        - $ref: "#/components/parameters/hdrAfiAppName"
+        - $ref: "#/components/parameters/hdrAfeApiKey"
+        - name: pingLevel
+          in: query
+          description: Ping level.
+          required: true
+          schema:
+            type: string
+            default: None
+            enum:
+              - None
+              - Component
+      responses:
+        "200":
+          $ref: "#/components/responses/pingResponse"
+        "400":
+          $ref: "#/components/responses/ErrorBadRequest"
+        "401":
+          $ref: "#/components/responses/ErrorUnauthorized"
+        "403":
+          $ref: "#/components/responses/ErrorForbidden"
+        "404":
+          $ref: "#/components/responses/ErrorNotFound"
+        "405":
+          $ref: "#/components/responses/ErrorMethodNotAllowed"
+        "413":
+          $ref: "#/components/responses/ErrorContentTooLarge"
+        "429":
+          $ref: "#/components/responses/ErrorTooManyRequests"
+        "500":
+          $ref: "#/components/responses/ErrorInternalServerError"
+        "502":
+          $ref: "#/components/responses/ErrorBadGateway"
+        "504":
+          $ref: "#/components/responses/ErrorGatewayTimeout"
+  /ping4:
+    get:
+      tags:
+        - Operations
+      security:
+        - ApikeyQueryAuth: []
+      description: ping.
+      operationId: ping4
+      summary: ping
+      parameters:
+        - $ref: "#/components/parameters/hdrAfeTraceId"
+        - $ref: "#/components/parameters/hdrAfeSessionId"
+        - $ref: "#/components/parameters/hdrAfeSourceId"
+        - $ref: "#/components/parameters/hdrAfeProductLine"
+        - $ref: "#/components/parameters/hdrAfiAppName"
+        - $ref: "#/components/parameters/hdrAfeApiKey"
+        - name: pingLevel
+          in: query
+          description: Ping level.
+          required: true
+          schema:
+            type: string
+            default: None
+            enum:
+              - None
+              - Component
+      responses:
+        "200":
+          $ref: "#/components/responses/pingResponse"
+        "400":
+          $ref: "#/components/responses/ErrorBadRequest"
+        "401":
+          $ref: "#/components/responses/ErrorUnauthorized"
+        "403":
+          $ref: "#/components/responses/ErrorForbidden"
+        "404":
+          $ref: "#/components/responses/ErrorNotFound"
+        "405":
+          $ref: "#/components/responses/ErrorMethodNotAllowed"
+        "413":
+          $ref: "#/components/responses/ErrorContentTooLarge"
+        "429":
+          $ref: "#/components/responses/ErrorTooManyRequests"
+        "500":
+          $ref: "#/components/responses/ErrorInternalServerError"
+        "502":
+          $ref: "#/components/responses/ErrorBadGateway"
+        "504":
+          $ref: "#/components/responses/ErrorGatewayTimeout"
+  /ping5:
+    get:
+      tags:
+        - Operations
+      security:
+        - ApikeyCookieAuth: []
+      description: ping.
+      operationId: ping5
+      summary: ping
+      parameters:
+        - $ref: "#/components/parameters/hdrAfeTraceId"
+        - $ref: "#/components/parameters/hdrAfeSessionId"
+        - $ref: "#/components/parameters/hdrAfeSourceId"
+        - $ref: "#/components/parameters/hdrAfeProductLine"
+        - $ref: "#/components/parameters/hdrAfiAppName"
+        - $ref: "#/components/parameters/hdrAfeApiKey"
+        - name: pingLevel
+          in: query
+          description: Ping level.
+          required: true
+          schema:
+            type: string
+            default: None
+            enum:
+              - None
+              - Component
+      responses:
+        "200":
+          $ref: "#/components/responses/pingResponse"
+        "400":
+          $ref: "#/components/responses/ErrorBadRequest"
+        "401":
+          $ref: "#/components/responses/ErrorUnauthorized"
+        "403":
+          $ref: "#/components/responses/ErrorForbidden"
+        "404":
+          $ref: "#/components/responses/ErrorNotFound"
+        "405":
+          $ref: "#/components/responses/ErrorMethodNotAllowed"
+        "413":
+          $ref: "#/components/responses/ErrorContentTooLarge"
+        "429":
+          $ref: "#/components/responses/ErrorTooManyRequests"
+        "500":
+          $ref: "#/components/responses/ErrorInternalServerError"
+        "502":
+          $ref: "#/components/responses/ErrorBadGateway"
+        "504":
+          $ref: "#/components/responses/ErrorGatewayTimeout"
+  /ping6:
+    get:
+      tags:
+        - Operations
+      security:
+        - OAuth2Implicit: []
+      description: ping.
+      operationId: ping6
+      summary: ping
+      parameters:
+        - $ref: "#/components/parameters/hdrAfeTraceId"
+        - $ref: "#/components/parameters/hdrAfeSessionId"
+        - $ref: "#/components/parameters/hdrAfeSourceId"
+        - $ref: "#/components/parameters/hdrAfeProductLine"
+        - $ref: "#/components/parameters/hdrAfiAppName"
+        - $ref: "#/components/parameters/hdrAfeApiKey"
+        - name: pingLevel
+          in: query
+          description: Ping level.
+          required: true
+          schema:
+            type: string
+            default: None
+            enum:
+              - None
+              - Component
+      responses:
+        "200":
+          $ref: "#/components/responses/pingResponse"
+        "400":
+          $ref: "#/components/responses/ErrorBadRequest"
+        "401":
+          $ref: "#/components/responses/ErrorUnauthorized"
+        "403":
+          $ref: "#/components/responses/ErrorForbidden"
+        "404":
+          $ref: "#/components/responses/ErrorNotFound"
+        "405":
+          $ref: "#/components/responses/ErrorMethodNotAllowed"
+        "413":
+          $ref: "#/components/responses/ErrorContentTooLarge"
+        "429":
+          $ref: "#/components/responses/ErrorTooManyRequests"
+        "500":
+          $ref: "#/components/responses/ErrorInternalServerError"
+        "502":
+          $ref: "#/components/responses/ErrorBadGateway"
+        "504":
+          $ref: "#/components/responses/ErrorGatewayTimeout"
+  /ping7:
+    get:
+      tags:
+        - Operations
+      security:
+        - OAuth2AuthCode: []
+      description: ping.
+      operationId: ping7
+      summary: ping
+      parameters:
+        - $ref: "#/components/parameters/hdrAfeTraceId"
+        - $ref: "#/components/parameters/hdrAfeSessionId"
+        - $ref: "#/components/parameters/hdrAfeSourceId"
+        - $ref: "#/components/parameters/hdrAfeProductLine"
+        - $ref: "#/components/parameters/hdrAfiAppName"
+        - $ref: "#/components/parameters/hdrAfeApiKey"
+        - name: pingLevel
+          in: query
+          description: Ping level.
+          required: true
+          schema:
+            type: string
+            default: None
+            enum:
+              - None
+              - Component
+      responses:
+        "200":
+          $ref: "#/components/responses/pingResponse"
+        "400":
+          $ref: "#/components/responses/ErrorBadRequest"
+        "401":
+          $ref: "#/components/responses/ErrorUnauthorized"
+        "403":
+          $ref: "#/components/responses/ErrorForbidden"
+        "404":
+          $ref: "#/components/responses/ErrorNotFound"
+        "405":
+          $ref: "#/components/responses/ErrorMethodNotAllowed"
+        "413":
+          $ref: "#/components/responses/ErrorContentTooLarge"
+        "429":
+          $ref: "#/components/responses/ErrorTooManyRequests"
+        "500":
+          $ref: "#/components/responses/ErrorInternalServerError"
+        "502":
+          $ref: "#/components/responses/ErrorBadGateway"
+        "504":
+          $ref: "#/components/responses/ErrorGatewayTimeout"
+  /creditreports:
+    post:
+      tags:
+        - Operations
+      security:
+        - OAuth2ClientCredentials: []
+      description:
+        Retrieve credit reports for the purporses of requesting a quote
+        premium for a customer.
+      operationId: postCreditReports
+      summary: Retrieve Credit reports from Lexus-Nexus
+      parameters:
+        - $ref: "#/components/parameters/hdrAfeTraceId"
+        - $ref: "#/components/parameters/hdrAfeSessionId"
+        - $ref: "#/components/parameters/hdrAfeSourceId"
+        - $ref: "#/components/parameters/hdrAfeProductLine"
+        - $ref: "#/components/parameters/hdrAfiAppName"
+        - $ref: "#/components/parameters/hdrAfeApiKey"
+        - name: verbose
+          in: query
+          description: Return full JSON body response (with empty values)
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/creditreportsRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/creditreportsResponse"
+        "400":
+          $ref: "#/components/responses/ErrorBadRequest"
+        "401":
+          $ref: "#/components/responses/ErrorUnauthorized"
+        "403":
+          $ref: "#/components/responses/ErrorForbidden"
+        "404":
+          $ref: "#/components/responses/ErrorNotFound"
+        "405":
+          $ref: "#/components/responses/ErrorMethodNotAllowed"
+        "413":
+          $ref: "#/components/responses/ErrorContentTooLarge"
+        "429":
+          $ref: "#/components/responses/ErrorTooManyRequests"
+        "500":
+          $ref: "#/components/responses/ErrorInternalServerError"
+        "502":
+          $ref: "#/components/responses/ErrorBadGateway"
+        "504":
+          $ref: "#/components/responses/ErrorGatewayTimeout"
+  /creditreports/reportids:
+    post:
+      tags:
+        - Operations
+      security:
+        - OAuth2Password: []
+      summary: Retrieve credit report from Lexus-Nexus using report ids
+      operationId: postCreditReportsReportIds
+      description: Retrieve credit reports with a list of reportids for
+        the purporses of requesting a quote premium for a customer.
+      parameters:
+        - $ref: "#/components/parameters/hdrAfeTraceId"
+        - $ref: "#/components/parameters/hdrAfeSessionId"
+        - $ref: "#/components/parameters/hdrAfeSourceId"
+        - $ref: "#/components/parameters/hdrAfeProductLine"
+        - $ref: "#/components/parameters/hdrAfiAppName"
+        - $ref: "#/components/parameters/hdrAfeApiKey"
+        - name: verbose
+          in: query
+          description: Return full JSON body response (with empty values)
+          schema:
+            type: string
+      requestBody:
+        $ref: "#/components/requestBodies/creditreportsReportIdsRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/creditreportsReportIdsResponse"
+        "400":
+          $ref: "#/components/responses/ErrorBadRequest"
+        "401":
+          $ref: "#/components/responses/ErrorUnauthorized"
+        "403":
+          $ref: "#/components/responses/ErrorForbidden"
+        "404":
+          $ref: "#/components/responses/ErrorNotFound"
+        "405":
+          $ref: "#/components/responses/ErrorMethodNotAllowed"
+        "413":
+          $ref: "#/components/responses/ErrorContentTooLarge"
+        "429":
+          $ref: "#/components/responses/ErrorTooManyRequests"
+        "500":
+          $ref: "#/components/responses/ErrorInternalServerError"
+        "502":
+          $ref: "#/components/responses/ErrorBadGateway"
+        "503":
+          $ref: "#/components/responses/ErrorServiceUnavailable"
+        "504":
+          $ref: "#/components/responses/ErrorGatewayTimeout"
+  /ping8:
+    get:
+      tags:
+        - Operations
+      security:
+        - OpenIDConnectAuth: []
+      description: ping.
+      operationId: ping8
+      summary: ping
+      parameters:
+        - $ref: "#/components/parameters/hdrAfeTraceId"
+        - $ref: "#/components/parameters/hdrAfeSessionId"
+        - $ref: "#/components/parameters/hdrAfeSourceId"
+        - $ref: "#/components/parameters/hdrAfeProductLine"
+        - $ref: "#/components/parameters/hdrAfiAppName"
+        - $ref: "#/components/parameters/hdrAfeApiKey"
+        - name: pingLevel
+          in: query
+          description: Ping level.
+          required: true
+          schema:
+            type: string
+            default: None
+            enum:
+              - None
+              - Component
+      responses:
+        "200":
+          $ref: "#/components/responses/pingResponse"
+        "400":
+          $ref: "#/components/responses/ErrorBadRequest"
+        "401":
+          $ref: "#/components/responses/ErrorUnauthorized"
+        "403":
+          $ref: "#/components/responses/ErrorForbidden"
+        "404":
+          $ref: "#/components/responses/ErrorNotFound"
+        "405":
+          $ref: "#/components/responses/ErrorMethodNotAllowed"
+        "413":
+          $ref: "#/components/responses/ErrorContentTooLarge"
+        "429":
+          $ref: "#/components/responses/ErrorTooManyRequests"
+        "500":
+          $ref: "#/components/responses/ErrorInternalServerError"
+        "502":
+          $ref: "#/components/responses/ErrorBadGateway"
+        "504":
+          $ref: "#/components/responses/ErrorGatewayTimeout"
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    AzureAD:
+      description:
+        "Azure Oauth 2.0 Client Credential flow\n---\n### When requesting\
+        \ access use \n### API name: API-Credit-Reports-API-V1-PreProd\n### ID : 896abfa1-3a94-44a6-bc69-1b74f528f9eb\n"
+        ### tokenUrl : https://login.microsoftonline.com/b6b2f512-6fd0-42fe-9659-6c5ee67da460/oauth2/v2.0/token
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    ApikeyAuth:
+      type: apiKey
+      in: header
+      name: x-apik-key
+    ApikeyQueryAuth:
+      type: apiKey
+      in: query
+      name: q-apikey
+    ApikeyCookieAuth:
+      type: apiKey
+      in: cookie
+      name: c-apikey
+    OAuth2Implicit:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://example.com/oauth2/authorize
+          scopes:
+            read: Grants read access
+            write: Grants write access
+    OAuth2AuthCode:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth2/authorize
+          tokenUrl: https://example.com/oauth2/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+    OAuth2ClientCredentials:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: https://example.com/oauth2/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+    OAuth2Password:
+      type: oauth2
+      flows:
+        password:
+          tokenUrl: https://example.com/oauth2/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+    OpenIDConnectAuth:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  schemas:
+    Error:
+      description: Error response
+      type: object
+      properties:
+        status:
+          type: object
+          properties:
+            status:
+              $ref: "#/components/schemas/Status"
+    Status:
+      description: Status response
+      type: object
+      properties:
+        code:
+          type: integer
+          description: HTTPS Status Code indicating success or failure.
+          minimum: 200
+        reason:
+          type: string
+          description: HTTP Status Reason
+        transactionId:
+          type: string
+          format: uuid
+          description:
+            To enable tracing of calls entering the boundaries of system
+            at a technical transaction level (as opposed to a business transaction
+            level). It can also be thought of an from an experience perspective.
+        maxMessageLevel:
+          enum:
+            - WARNING
+            - ERROR
+            - INFO
+          type: string
+          description:
+            "Maximum level of API message types being returned. Populated
+            as follows:
+            ERROR - at least one error returned, could also include INFO and WARNING
+            messages
+            WARNING - no errors encountered, at least one WARNING. Could also include
+            INFO messages.
+            INFO - at least one informational message returned. no errors or warnings
+            encountered.
+            "
+        messages:
+          type: array
+          minItems: 0
+          description:
+            Optional messages that provide additional context or explanation
+            for status returned. Can include errors, warnings, and informational messages.
+          items:
+            type: object
+            properties:
+              code:
+                description: Numeric code uniquely identifying specific error.
+                type: string
+                minLength: 6
+                maxLength: 6
+              level:
+                enum:
+                  - INFO
+                  - WARNING
+                  - ERROR
+                type: string
+                description:
+                  Enumeration of coded values indicating the level of severity
+                  associated with this message
+              description:
+                type: string
+                description:
+                  Explanation of specific issue or error providing additional
+                  detail of the problem
+              details:
+                type: object
+                description: Collection of data further explaining this specific message
+                properties:
+                  field:
+                    type: string
+                    description: JSON object field directly associated with message.
+                  description:
+                    type: string
+                    description:
+                      Detailed information describing issue related to
+                      individual request field.
+                required:
+                  - description
+            required:
+              - level
+              - description
+        metrics:
+          type: object
+          description: Metrics about duration of call
+          properties:
+            acceptedOn:
+              type: string
+              description: Date/time request was received by service
+            returnedOn:
+              type: string
+              description: Date/time request was completed
+      required:
+        - code
+        - reason
+        - transactionId
+  headers:
+    Cache-Control:
+      description:
+        "The Cache-Control HTTP header field holds directives (instructions)\
+        \ \xC3\xA2 in both requests and responses \xC3\xA2 that control caching in\
+        \ browsers and shared caches (e.g. Proxies, CDNs).\n"
+      schema:
+        type: string
+        example: no-store,no-cache
+    Strict-Transport-Security:
+      description:
+        "The Cache-Control HTTP header field holds directives (instructions)\
+        \ \xC3\xA2 in both requests and responses \xC3\xA2 that control caching in\
+        \ browsers and shared caches (e.g. Proxies, CDNs).\n"
+      schema:
+        type: string
+      example: max-age=86400; includeSubDomains
+    Content-Security-Policy:
+      description:
+        "The Cache-Control HTTP header field holds directives (instructions)\
+        \ \xC3\xA2 in both requests and responses \xC3\xA2 that control caching in\
+        \ browsers and shared caches (e.g. Proxies, CDNs).\n"
+      schema:
+        type: string
+      example: frame-ancestors 'none'
+    X-Frame-Options:
+      description:
+        "The Cache-Control HTTP header field holds directives (instructions)\
+        \ \xC3\xA2 in both requests and responses \xC3\xA2 that control caching in\
+        \ browsers and shared caches (e.g. Proxies, CDNs).\n"
+      schema:
+        type: string
+      example: DENY
+    X-Content-Type-Options:
+      description:
+        "The Cache-Control HTTP header field holds directives (instructions)\
+        \ \xC3\xA2 in both requests and responses \xC3\xA2 that control caching in\
+        \ browsers and shared caches (e.g. Proxies, CDNs).\n"
+      schema:
+        type: string
+      example: nosniff
+  parameters:
+    hdrAfeTraceId:
+      description:
+        An identifier representing the specific request to enable tracing
+        of calls across systems.
+      required: true
+      in: header
+      name: afe-trace-id
+      schema:
+        type: string
+        example: "123"
+    hdrAfeSessionId:
+      description:
+        An identifier representing the specific instance of the client
+        in the duration of the call.
+      required: true
+      in: header
+      name: afe-session-id
+      schema:
+        type: string
+        example: "123"
+    hdrAfeSourceId:
+      description: The name of the client or source system accessing the API.
+      required: true
+      in: header
+      name: afe-source-id
+      schema:
+        type: string
+        example: "123"
+    hdrAfeProductLine:
+      description: Identify the line of business that the call is related to
+      required: true
+      in: header
+      name: afe-product-line
+      schema:
+        type: string
+        example: "123"
+    hdrAfiAppName:
+      description: ISAT name for application or service invoking this API
+      required: true
+      in: header
+      name: afi-appname
+      schema:
+        type: string
+        example: Layer7Retirement
+    hdrAfeApiKey:
+      description: An identifier representing the client accessing the API. Issued by Apigee Platform
+      required: true
+      in: header
+      name: afe-api-key
+      schema:
+        type: string
+        example: "3ZN5l3jFXwx1ek2h1glA5Y2Ozokq3PL1Zn1Vl1FEgIdrXpWe"
+  requestBodies:
+    creditreportsRequest:
+      description: Successful Response
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - TransactionalData
+              - Company
+              - ScoreModel
+              - Parties
+            properties:
+              TransactionalData:
+                type: object
+                required:
+                  - consumingSystemName
+                  - consumerRequestPurpose
+                  - consumerTransactionID
+                  - userId
+                  - orderId
+                  - reportQualifyingAgeUnit
+                  - reportQualifyingAge
+                  - forceOrder
+                properties:
+                  consumingSystemName:
+                    type: string
+                  consumerRequestPurpose:
+                    type: string
+                  consumerTransactionID:
+                    type: string
+                  userId:
+                    type: string
+                  orderId:
+                    type: string
+                  reportQualifyingAgeUnit:
+                    type: string
+                  reportQualifyingAge:
+                    type: string
+                  forceOrder:
+                    type: string
+                  unmatchedSubjectOrdering:
+                    type: string # Optional
+                  enableFailedMessageProcessing:
+                    type: string # Optional
+                  processingMode:
+                    type: string # Optional
+                  effectiveDate:
+                    type: string # Optional
+                  nameMatchInd:
+                    type: string # Optional
+                  reMatch:
+                    type: string # Optional
+                  returnErrorType:
+                    type: string # Optional
+                  reprocessBatchOnlyErrors:
+                    type: string # Optional
+                  searchMethod:
+                    type: string # Optional
+                  returnAttchSection:
+                    type: string # Optional
+                  attchQualifyingAgeMonths:
+                    type: string # Optional
+                  requestLengthOfResidenceData:
+                    type: string # Optional
+                  correlationId:
+                    type: string # Optional
+                  userReferenceNumber:
+                    type: string # Optional
+                  transitionPolicyRequest:
+                    type: string # Optional
+                  minimumOrderCreditSubjectAgeYears:
+                    type: string # Optional
+                  requestMaritalStatusData:
+                    type: boolean # Optional
+              Company:
+                type: object
+                required:
+                  - companyCode
+                  - division
+                properties:
+                  companyCode:
+                    type: string
+                  division:
+                    type: string
+                  lineOfBusiness:
+                    type: string # Optional
+                  partnerId:
+                    type: string # Optional
+                  productId:
+                    type: string # Optional
+                  producerId:
+                    type: string # Optional
+                  brandPartnerAccountKey:
+                    type: string # Optional
+              ScoreModel:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - modelCode
+                    - characteristicType
+                    - characteristicValue
+                  properties:
+                    modelCode:
+                      type: string
+                    characteristicType:
+                      type: string
+                    characteristicValue:
+                      type: string
+              Parties:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - Person
+                    - LicenseData
+                    - Addresses
+                  properties:
+                    Person:
+                      type: object
+                      required:
+                        - affiliateSharingOptOut
+                        - firstName
+                        - birthDate
+                        - gender
+                        - lastName
+                        - maritalStatus
+                        - partyID
+                        - socSecNumber
+                      properties:
+                        affiliateSharingOptOut:
+                          type: string
+                        firstName:
+                          type: string
+                        birthDate:
+                          type: string
+                        gender:
+                          type: string
+                        lastName:
+                          type: string
+                        maritalStatus:
+                          type: string
+                        middleName:
+                          type: string # Optional
+                        partyID:
+                          type: string
+                        socSecNumber:
+                          type: string
+                        birthDateFlag:
+                          type: string # Optional
+                        centuryOfBirthDate:
+                          type: string # Optional
+                        classification:
+                          type: string # Optional
+                        creditScoreAccessPin:
+                          type: string # Optional
+                        driverHistoryDataExists:
+                          type: string # Optional
+                        firstNameFlag:
+                          type: string # Optional
+                        genderFlag:
+                          type: string # Optional
+                        lastNameFlag:
+                          type: string # Optional
+                        occupationDescription:
+                          type: string # Optional
+                        policyHolderNameAssocInd:
+                          type: string # Optional
+                        prefixName:
+                          type: string # Optional
+                        prefixNameFlag:
+                          type: string # Optional
+                        relationship:
+                          type: string # Optional
+                        socSecNumberFlag:
+                          type: string # Optional
+                        suffixName:
+                          type: string # Optional
+                        suffixNameFlag:
+                          type: string # Optional
+                        unparsedName:
+                          type: string # Optional
+                        vehicleOperatorNameAssocInd:
+                          type: string # Optional
+                        vendorSubjectID:
+                          type: string # Optional
+                    LicenseData:
+                      type: object
+                      required:
+                        - licenseNumber
+                        - licenseState
+                      properties:
+                        licenseNumber:
+                          type: string
+                        licenseState:
+                          type: string
+                        expirationDate:
+                          type: string # Optional
+                        classification:
+                          type: string # Optional
+                        issueDate:
+                          type: string # Optional
+                        restrictions:
+                          type: array
+                          items:
+                            type: string # Optional
+                        endorsements:
+                          type: array
+                          items:
+                            type: string # Optional
+                        licenseType:
+                          type: string # Optional
+                        heightFeet:
+                          type: string # Optional
+                        heightInches:
+                          type: string # Optional
+                        weight:
+                          type: string # Optional
+                        eyeColor:
+                          type: string # Optional
+                        hairColor:
+                          type: string # Optional
+                        licenseNumberFlag:
+                          type: string # Optional
+                        licenseStateFlag:
+                          type: string # Optional
+                        licenseStatus:
+                          type: string # Optional
+                    Addresses:
+                      type: array
+                      items:
+                        type: object
+                        required:
+                          - addressType
+                          - cityName
+                          - line1Text
+                          - stateCode
+                          - zip5Code
+                        properties:
+                          addressMatchCode:
+                            type: string # Optional
+                          addressType:
+                            type: string
+                          apartmentNumber:
+                            type: string # Optional
+                          apartmentNumberFlag:
+                            type: string # Optional
+                          cityName:
+                            type: string
+                          cityNameFlag:
+                            type: string # Optional
+                          cityStateZip:
+                            type: string # Optional
+                          correlationIdentifier:
+                            type: string # Optional
+                          countryCode:
+                            type: string # Optional
+                          county:
+                            type: string # Optional
+                          countyFIPSCode:
+                            type: string # Optional
+                          houseNumber:
+                            type: string # Optional
+                          houseNumberFlag:
+                            type: string # Optional
+                          housingStatus:
+                            type: string # Optional
+                          latitude:
+                            type: string # Optional
+                          line1Text:
+                            type: string
+                          line2Text:
+                            type: string # Optional
+                          longitude:
+                            type: string # Optional
+                          predirectional:
+                            type: string # Optional
+                          postdirectional:
+                            type: string # Optional
+                          stateCode:
+                            type: string
+                          stateCodeFlag:
+                            type: string # Optional
+                          streetName:
+                            type: string # Optional
+                          streetNameFlag:
+                            type: string # Optional
+                          streetType:
+                            type: string # Optional
+                          unitType:
+                            type: string # Optional
+                          zip4Code:
+                            type: string # Optional
+                          zip4Flag:
+                            type: string # Optional
+                          zip5Code:
+                            type: string
+                          zip5Flag:
+                            type: string # Optional
+                          zipCarrierRoute:
+                            type: string # Optional
+                    AttachmentRequest:
+                      type: object
+                      properties:
+                        includeAttachments:
+                          type: boolean # Optional
+                        includeHistory:
+                          type: boolean # Optional
+                        statusFilter:
+                          type: string # Optional
+    creditreportsReportIdsRequest:
+      description: "Successful Response"
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - TransactionalData
+              - reportIds
+            properties:
+              TransactionalData:
+                type: object
+                required:
+                  - consumingSystemName
+                  - consumerRequestPurpose
+                  - consumerTransactionID
+                  - userId
+                  - orderId
+                  - reportQualifyingAgeUnit
+                  - reportQualifyingAge
+                properties:
+                  consumingSystemName:
+                    type: string
+                  consumerRequestPurpose:
+                    type: string
+                  consumerTransactionID:
+                    type: string
+                  userId:
+                    type: string
+                  orderId:
+                    type: string
+                  reportQualifyingAgeUnit:
+                    type: string
+                  reportQualifyingAge:
+                    type: string
+                  forceOrder:
+                    type: string # Optional
+                  unmatchedSubjectOrdering:
+                    type: string # Optional
+                  enableFailedMessageProcessing:
+                    type: string # Optional
+                  processingMode:
+                    type: string # Optional
+                  effectiveDate:
+                    type: string # Optional
+                  nameMatchInd:
+                    type: string # Optional
+                  reMatch:
+                    type: string # Optional
+                  returnErrorType:
+                    type: string # Optional
+                  reprocessBatchOnlyErrors:
+                    type: string # Optional
+                  searchMethod:
+                    type: string # Optional
+                  returnAttchSection:
+                    type: string # Optional
+                  attchQualifyingAgeMonths:
+                    type: string # Optional
+                  requestLengthOfResidenceData:
+                    type: string # Optional
+                  correlationId:
+                    type: string # Optional
+                  userReferenceNumber:
+                    type: string # Optional
+                  transitionPolicyRequest:
+                    type: string # Optional
+                  minimumOrderCreditSubjectAgeYears:
+                    type: string # Optional
+                  requestMaritalStatusData:
+                    type: boolean # Optional
+              AttachmentRequest:
+                type: object # Optional
+                properties:
+                  includeAttachments:
+                    type: boolean # Optional
+                  includeHistory:
+                    type: boolean # Optional
+                  statusFilter:
+                    type: string # Optional
+              reportIds:
+                type: array
+                items:
+                  type: string
+              HouseHoldPartyId:
+                type: array # Optional
+                items:
+                  type: string # Optional
+  responses:
+    pingResponse:
+      description: OK
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              PingResponse:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  message:
+                    type: string
+                  verification:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        componentName:
+                          type: string
+                        status:
+                          type: string
+                          example: Success
+                        message:
+                          type: string
+                        reference:
+                          type: string
+                        timeTakenForPing:
+                          type: string
+                  timeTakenForComponentVerification:
+                    type: integer
+              status:
+                type: object
+                properties:
+                  reason:
+                    type: string
+                  code:
+                    type: integer
+                  transactionID:
+                    type: string
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        description:
+                          type: string
+                        details:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              description:
+                                type: string
+                              field:
+                                type: string
+                        level:
+                          type: string
+                  maxMessageLevel:
+                    type: string
+                  metrics:
+                    type: object
+                    properties:
+                      acceptedOn:
+                        type: string
+                      returnedOn:
+                        type: string
+              message:
+                type: string
+              timeTakenForPing:
+                type: integer
+    creditreportsResponse:
+      description: creditreportsResponse
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              CreditReportResponse:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    reportCondition:
+                      type: object
+                      properties:
+                        errorType:
+                          type: string
+                        reportCondition:
+                          type: string
+                        reportConditionDetail:
+                          type: string
+                        vendorErrorCode:
+                          type: string
+                        vendorErrorDescription:
+                          type: string
+                    reportGeneralInfo:
+                      type: object
+                      properties:
+                        billingAccountNumber:
+                          type: string
+                        reportOrderDate:
+                          type: string
+                        reportReceivedDate:
+                          type: string
+                        reportID:
+                          type: string
+                        reportVendorName:
+                          type: string
+                        reportVendorReferenceNumber:
+                          type: string
+                        dataSource:
+                          type: string
+                        processingStatusCode:
+                          type: string
+                    OriginalOrderData:
+                      type: object
+                      properties:
+                        Parties:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              Person:
+                                type: object
+                                properties:
+                                  correlationIdentifier:
+                                    type: string
+                                  SubjectData:
+                                    type: object
+                                    properties:
+                                      affiliateSharingOptOut:
+                                        type: string
+                                      birthDate:
+                                        type: string
+                                      birthDateFlag:
+                                        type: string
+                                      centuryOfBirthDate:
+                                        type: string
+                                      classification:
+                                        type: string
+                                      creditScoreAccessPin:
+                                        type: string
+                                      driverHistoryDataExists:
+                                        type: string
+                                      firstName:
+                                        type: string
+                                      firstNameFlag:
+                                        type: string
+                                      gender:
+                                        type: string
+                                      genderFlag:
+                                        type: string
+                                      lastName:
+                                        type: string
+                                      lastNameFlag:
+                                        type: string
+                                      maritalStatus:
+                                        type: string
+                                      middleName:
+                                        type: string
+                                      middleNameFlag:
+                                        type: string
+                                      occupationDescription:
+                                        type: string
+                                      partyID:
+                                        type: string
+                                      policyHolderNameAssocInd:
+                                        type: string
+                                      prefixName:
+                                        type: string
+                                      prefixNameFlag:
+                                        type: string
+                                      relationship:
+                                        type: string
+                                      socSecNumber:
+                                        type: string
+                                      socSecNumberFlag:
+                                        type: string
+                                      suffixName:
+                                        type: string
+                                      suffixNameFlag:
+                                        type: string
+                                      unparsedName:
+                                        type: string
+                                      vehicleOperatorNameAssocInd:
+                                        type: string
+                                      vendorSubjectID:
+                                        type: string
+                                  LicenseData:
+                                    type: object
+                                    properties:
+                                      expirationDate:
+                                        type: string
+                                      classification:
+                                        type: string
+                                      issueDate:
+                                        type: string
+                                      restrictions:
+                                        type: array
+                                        items:
+                                          type: string
+                                      endorsements:
+                                        type: array
+                                        items:
+                                          type: string
+                                      licenseType:
+                                        type: string
+                                      heightFeet:
+                                        type: string
+                                      heightInches:
+                                        type: string
+                                      weight:
+                                        type: string
+                                      eyeColor:
+                                        type: string
+                                      hairColor:
+                                        type: string
+                                      licenseNumber:
+                                        type: string
+                                      licenseNumberFlag:
+                                        type: string
+                                      licenseState:
+                                        type: string
+                                      licenseStateFlag:
+                                        type: string
+                                      licenseStatus:
+                                        type: string
+                              Addresses:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    addressMatchCode:
+                                      type: string
+                                    addressType:
+                                      type: string
+                                    apartmentNumber:
+                                      type: string
+                                    apartmentNumberFlag:
+                                      type: string
+                                    cityName:
+                                      type: string
+                                    cityNameFlag:
+                                      type: string
+                                    cityStateZip:
+                                      type: string
+                                    correlationIdentifier:
+                                      type: string
+                                    countryCode:
+                                      type: string
+                                    county:
+                                      type: string
+                                    countyFIPSCode:
+                                      type: string
+                                    houseNumber:
+                                      type: string
+                                    houseNumberFlag:
+                                      type: string
+                                    housingStatus:
+                                      type: string
+                                    latitude:
+                                      type: string
+                                    line1Text:
+                                      type: string
+                                    line2Text:
+                                      type: string
+                                    longitude:
+                                      type: string
+                                    predirectional:
+                                      type: string
+                                    postdirectional:
+                                      type: string
+                                    stateCode:
+                                      type: string
+                                    stateCodeFlag:
+                                      type: string
+                                    streetName:
+                                      type: string
+                                    streetNameFlag:
+                                      type: string
+                                    streetType:
+                                      type: string
+                                    unitType:
+                                      type: string
+                                    zip4Code:
+                                      type: string
+                                    zip4Flag:
+                                      type: string
+                                    zip5Code:
+                                      type: string
+                                    zip5Flag:
+                                      type: string
+                                    zipCarrierRoute:
+                                      type: string
+                        ScoreModel:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              characteristicType:
+                                type: string
+                              characteristicValue:
+                                type: string
+                              modelCode:
+                                type: string
+                    CreditData:
+                      type: object
+                      properties:
+                        TransactionControl:
+                          type: object
+                          properties:
+                            bureauSubMarket:
+                              type: string
+                            subscriberName:
+                              type: string
+                            countryCode:
+                              type: string
+                            industryCode:
+                              type: string
+                            memberCode:
+                              type: string
+                            versionSwitch:
+                              type: string
+                            languageIndicator:
+                              type: string
+                            userReferenceNumber:
+                              type: string
+                            billingAccountNumber:
+                              type: string
+                            transactionDateTime:
+                              type: string
+                        Subject:
+                          type: object
+                          properties:
+                            SubjectHeader:
+                              type: object
+                              properties:
+                                subjectIdentifier:
+                                  type: string
+                                fileNumber:
+                                  type: string
+                                fileHitIndicator:
+                                  type: string
+                                ssnMatchIndicator:
+                                  type: string
+                                consumerStatementIndicator:
+                                  type: string
+                                bureauMarket:
+                                  type: string
+                                suppressionIndicator:
+                                  type: string
+                                inFileSinceDate:
+                                  type: string
+                            SubjectPersonal:
+                              type: object
+                              properties:
+                                affiliateSharingOptOut:
+                                  type: string
+                                birthDate:
+                                  type: string
+                                birthDateFlag:
+                                  type: string
+                                centuryOfBirthDate:
+                                  type: string
+                                classification:
+                                  type: string
+                                creditScoreAccessPin:
+                                  type: string
+                                driverHistoryDataExists:
+                                  type: string
+                                firstName:
+                                  type: string
+                                firstNameFlag:
+                                  type: string
+                                gender:
+                                  type: string
+                                genderFlag:
+                                  type: string
+                                lastName:
+                                  type: string
+                                lastNameFlag:
+                                  type: string
+                                maritalStatus:
+                                  type: string
+                                middleName:
+                                  type: string
+                                middleNameFlag:
+                                  type: string
+                                occupationDescription:
+                                  type: string
+                                partyID:
+                                  type: string
+                                policyHolderNameAssocInd:
+                                  type: string
+                                prefixName:
+                                  type: string
+                                prefixNameFlag:
+                                  type: string
+                                relationship:
+                                  type: string
+                                socSecNumber:
+                                  type: string
+                                socSecNumberFlag:
+                                  type: string
+                                suffixName:
+                                  type: string
+                                suffixNameFlag:
+                                  type: string
+                                unparsedName:
+                                  type: string
+                                vehicleOperatorNameAssocInd:
+                                  type: string
+                                vendorSubjectID:
+                                  type: string
+                            SubjectAddress:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  sourceIndicator:
+                                    type: string
+                                  dateReported:
+                                    type: string
+                                  standardizedFlag:
+                                    type: string
+                                  urbanizationName:
+                                    type: string
+                                  housingStatus:
+                                    type: string
+                                  AddressData:
+                                    type: object
+                                    properties:
+                                      addressMatchCode:
+                                        type: string
+                                      addressType:
+                                        type: string
+                                      apartmentNumber:
+                                        type: string
+                                      apartmentNumberFlag:
+                                        type: string
+                                      cityName:
+                                        type: string
+                                      cityNameFlag:
+                                        type: string
+                                      cityStateZip:
+                                        type: string
+                                      correlationIdentifier:
+                                        type: string
+                                      countryCode:
+                                        type: string
+                                      county:
+                                        type: string
+                                      countyFIPSCode:
+                                        type: string
+                                      houseNumber:
+                                        type: string
+                                      houseNumberFlag:
+                                        type: string
+                                      housingStatus:
+                                        type: string
+                                      latitude:
+                                        type: string
+                                      line1Text:
+                                        type: string
+                                      line2Text:
+                                        type: string
+                                      longitude:
+                                        type: string
+                                      predirectional:
+                                        type: string
+                                      postdirectional:
+                                        type: string
+                                      stateCode:
+                                        type: string
+                                      stateCodeFlag:
+                                        type: string
+                                      streetName:
+                                        type: string
+                                      streetNameFlag:
+                                        type: string
+                                      streetType:
+                                        type: string
+                                      unitType:
+                                        type: string
+                                      zip4Code:
+                                        type: string
+                                      zip4Flag:
+                                        type: string
+                                      zip5Code:
+                                        type: string
+                                      zip5Flag:
+                                        type: string
+                                      zipCarrierRoute:
+                                        type: string
+                            SubjectEmployment:
+                              type: object
+                              properties:
+                                name:
+                                  type: string
+                                address:
+                                  type: string
+                                city:
+                                  type: string
+                                state:
+                                  type: string
+                                zipCode:
+                                  type: string
+                                country:
+                                  type: string
+                                phoneNumber:
+                                  type: string
+                                jobTitle:
+                                  type: string
+                                employmentStatus:
+                                  type: string
+                                startDate:
+                                  type: string
+                                endDate:
+                                  type: string
+                            SubjectPhone:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  phoneNumber:
+                                    type: string
+                                  phoneNumberType:
+                                    type: string
+                                  phoneNumberStatus:
+                                    type: string
+                                required:
+                                  - phoneNumber
+                                  - phoneNumberType
+                                  - phoneNumberStatus
+                            SubjectName:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  nameType:
+                                    type: string
+                                  nameValue:
+                                    type: string
+                                  nameStatus:
+                                    type: string
+                                  nameDate:
+                                    type: string
+              Errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    errorCode:
+                      type: string
+                    errorMessage:
+                      type: string
+              TransactionalData:
+                type: object
+                properties:
+                  consumingSystemName:
+                    type: string
+                  consumerRequestPurpose:
+                    type: string
+                  consumerTransactionID:
+                    type: string
+                  userId:
+                    type: string
+                  orderId:
+                    type: string
+                  reportQualifyingAgeUnit:
+                    type: string
+                  reportQualifyingAge:
+                    type: string
+                  forceOrder:
+                    type: string
+                  unmatchedSubjectOrdering:
+                    type: string
+                  enableFailedMessageProcessing:
+                    type: string
+                  processingMode:
+                    type: string
+                  effectiveDate:
+                    type: string
+                  nameMatchInd:
+                    type: string
+                  reMatch:
+                    type: string
+                  returnErrorType:
+                    type: string
+                  reprocessBatchOnlyErrors:
+                    type: string
+                  searchMethod:
+                    type: string
+                  returnAttchSection:
+                    type: string
+                  attchQualifyingAgeMonths:
+                    type: string
+                  requestLengthOfResidenceData:
+                    type: string
+                  correlationId:
+                    type: string
+                  userReferenceNumber:
+                    type: string
+                  transitionPolicyRequest:
+                    type: string
+                  requestMaritalStatusData:
+                    type: boolean
+                  requestFullVendorResponse:
+                    type: boolean
+              status:
+                type: object
+                properties:
+                  reason:
+                    type: string
+                  code:
+                    type: integer
+                  transactionID:
+                    type: string
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        description:
+                          type: string
+                        details:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              description:
+                                type: string
+                              field:
+                                type: string
+                        level:
+                          type: string
+                  maxMessageLevel:
+                    type: string
+                  metrics:
+                    type: object
+                    properties:
+                      acceptedOn:
+                        type: string
+                      returnedOn:
+                        type: string
+    creditreportsReportIdsResponse:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              CreditReportResponse:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    reportCondition:
+                      type: object
+                      properties:
+                        errorType:
+                          type: string
+                        reportCondition:
+                          type: string
+                        reportConditionDetail:
+                          type: string
+                        vendorErrorCode:
+                          type: string
+                        vendorErrorDescription:
+                          type: string
+                    reportGeneralInfo:
+                      type: object
+                      properties:
+                        billingAccountNumber:
+                          type: string
+                        reportOrderDate:
+                          type: string
+                        reportReceivedDate:
+                          type: string
+                        reportID:
+                          type: string
+                        reportVendorName:
+                          type: string
+                        reportVendorReferenceNumber:
+                          type: string
+                        dataSource:
+                          type: string
+                        processingStatusCode:
+                          type: string
+                    OriginalOrderData:
+                      type: object
+                      properties:
+                        Parties:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              Person:
+                                type: object
+                                properties:
+                                  correlationIdentifier:
+                                    type: string
+                                  SubjectData:
+                                    type: object
+                                    properties:
+                                      affiliateSharingOptOut:
+                                        type: string
+                                      birthDate:
+                                        type: string
+                                      birthDateFlag:
+                                        type: string
+                                      centuryOfBirthDate:
+                                        type: string
+                                      classification:
+                                        type: string
+                                      creditScoreAccessPin:
+                                        type: string
+                                      driverHistoryDataExists:
+                                        type: string
+                                      firstName:
+                                        type: string
+                                      firstNameFlag:
+                                        type: string
+                                      gender:
+                                        type: string
+                                      genderFlag:
+                                        type: string
+                                      lastName:
+                                        type: string
+                                      lastNameFlag:
+                                        type: string
+                                      maritalStatus:
+                                        type: string
+                                      middleName:
+                                        type: string
+                                      middleNameFlag:
+                                        type: string
+                                      occupationDescription:
+                                        type: string
+                                      partyID:
+                                        type: string
+                                      policyHolderNameAssocInd:
+                                        type: string
+                                      prefixName:
+                                        type: string
+                                      prefixNameFlag:
+                                        type: string
+                                      relationship:
+                                        type: string
+                                      socSecNumber:
+                                        type: string
+                                      socSecNumberFlag:
+                                        type: string
+                                      suffixName:
+                                        type: string
+                                      suffixNameFlag:
+                                        type: string
+                                      unparsedName:
+                                        type: string
+                                      vehicleOperatorNameAssocInd:
+                                        type: string
+                                      vendorSubjectID:
+                                        type: string
+                                  LicenseData:
+                                    type: object
+                                    properties:
+                                      expirationDate:
+                                        type: string
+                                      classification:
+                                        type: string
+                                      issueDate:
+                                        type: string
+                                      restrictions:
+                                        type: array
+                                        items:
+                                          type: string
+                                      endorsements:
+                                        type: array
+                                        items:
+                                          type: string
+                                      licenseType:
+                                        type: string
+                                      heightFeet:
+                                        type: string
+                                      heightInches:
+                                        type: string
+                                      weight:
+                                        type: string
+                                      eyeColor:
+                                        type: string
+                                      hairColor:
+                                        type: string
+                                      licenseNumber:
+                                        type: string
+                                      licenseNumberFlag:
+                                        type: string
+                                      licenseState:
+                                        type: string
+                                      licenseStateFlag:
+                                        type: string
+                                      licenseStatus:
+                                        type: string
+                              Addresses:
+                                type: array
+                                items:
+                                  type: object
+                                  properties:
+                                    addressMatchCode:
+                                      type: string
+                                    addressType:
+                                      type: string
+                                    apartmentNumber:
+                                      type: string
+                                    apartmentNumberFlag:
+                                      type: string
+                                    cityName:
+                                      type: string
+                                    cityNameFlag:
+                                      type: string
+                                    cityStateZip:
+                                      type: string
+                                    correlationIdentifier:
+                                      type: string
+                                    countryCode:
+                                      type: string
+                                    county:
+                                      type: string
+                                    countyFIPSCode:
+                                      type: string
+                                    houseNumber:
+                                      type: string
+                                    houseNumberFlag:
+                                      type: string
+                                    housingStatus:
+                                      type: string
+                                    latitude:
+                                      type: string
+                                    line1Text:
+                                      type: string
+                                    line2Text:
+                                      type: string
+                                    longitude:
+                                      type: string
+                                    predirectional:
+                                      type: string
+                                    postdirectional:
+                                      type: string
+                                    stateCode:
+                                      type: string
+                                    stateCodeFlag:
+                                      type: string
+                                    streetName:
+                                      type: string
+                                    streetNameFlag:
+                                      type: string
+                                    streetType:
+                                      type: string
+                                    unitType:
+                                      type: string
+                                    zip4Code:
+                                      type: string
+                                    zip4Flag:
+                                      type: string
+                                    zip5Code:
+                                      type: string
+                                    zip5Flag:
+                                      type: string
+                                    zipCarrierRoute:
+                                      type: string
+                        ScoreModel:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              characteristicType:
+                                type: string
+                              characteristicValue:
+                                type: string
+                              modelCode:
+                                type: string
+                    CreditData:
+                      type: object
+                      properties:
+                        TransactionControl:
+                          type: object
+                          properties:
+                            bureauSubMarket:
+                              type: string
+                            subscriberName:
+                              type: string
+                            countryCode:
+                              type: string
+                            industryCode:
+                              type: string
+                            memberCode:
+                              type: string
+                            versionSwitch:
+                              type: string
+                            languageIndicator:
+                              type: string
+                            userReferenceNumber:
+                              type: string
+                            billingAccountNumber:
+                              type: string
+                            transactionDateTime:
+                              type: string
+                        Subject:
+                          type: object
+                          properties:
+                            SubjectHeader:
+                              type: object
+                              properties:
+                                subjectIdentifier:
+                                  type: string
+                                fileNumber:
+                                  type: string
+                                fileHitIndicator:
+                                  type: string
+                                ssnMatchIndicator:
+                                  type: string
+                                consumerStatementIndicator:
+                                  type: string
+                                bureauMarket:
+                                  type: string
+                                suppressionIndicator:
+                                  type: string
+                                inFileSinceDate:
+                                  type: string
+                            SubjectPersonal:
+                              type: object
+                              properties:
+                                affiliateSharingOptOut:
+                                  type: string
+                                birthDate:
+                                  type: string
+                                birthDateFlag:
+                                  type: string
+                                centuryOfBirthDate:
+                                  type: string
+                                classification:
+                                  type: string
+                                creditScoreAccessPin:
+                                  type: string
+                                driverHistoryDataExists:
+                                  type: string
+                                firstName:
+                                  type: string
+                                firstNameFlag:
+                                  type: string
+                                gender:
+                                  type: string
+                                genderFlag:
+                                  type: string
+                                lastName:
+                                  type: string
+                                lastNameFlag:
+                                  type: string
+                                maritalStatus:
+                                  type: string
+                                middleName:
+                                  type: string
+                                middleNameFlag:
+                                  type: string
+                                occupationDescription:
+                                  type: string
+                                partyID:
+                                  type: string
+                                policyHolderNameAssocInd:
+                                  type: string
+                                prefixName:
+                                  type: string
+                                prefixNameFlag:
+                                  type: string
+                                relationship:
+                                  type: string
+                                socSecNumber:
+                                  type: string
+                                socSecNumberFlag:
+                                  type: string
+                                suffixName:
+                                  type: string
+                                suffixNameFlag:
+                                  type: string
+                                unparsedName:
+                                  type: string
+                                vehicleOperatorNameAssocInd:
+                                  type: string
+                                vendorSubjectID:
+                                  type: string
+                            SubjectAddress:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  sourceIndicator:
+                                    type: string
+                                  dateReported:
+                                    type: string
+                                  standardizedFlag:
+                                    type: string
+                                  urbanizationName:
+                                    type: string
+                                  housingStatus:
+                                    type: string
+                                  AddressData:
+                                    type: object
+                                    properties:
+                                      addressMatchCode:
+                                        type: string
+                                      addressType:
+                                        type: string
+                                      apartmentNumber:
+                                        type: string
+                                      apartmentNumberFlag:
+                                        type: string
+                                      cityName:
+                                        type: string
+                                      cityNameFlag:
+                                        type: string
+                                      cityStateZip:
+                                        type: string
+                                      correlationIdentifier:
+                                        type: string
+                                      countryCode:
+                                        type: string
+                                      county:
+                                        type: string
+                                      countyFIPSCode:
+                                        type: string
+                                      houseNumber:
+                                        type: string
+                                      houseNumberFlag:
+                                        type: string
+                                      housingStatus:
+                                        type: string
+                                      latitude:
+                                        type: string
+                                      line1Text:
+                                        type: string
+                                      line2Text:
+                                        type: string
+                                      longitude:
+                                        type: string
+                                      predirectional:
+                                        type: string
+                                      postdirectional:
+                                        type: string
+                                      stateCode:
+                                        type: string
+                                      stateCodeFlag:
+                                        type: string
+                                      streetName:
+                                        type: string
+                                      streetNameFlag:
+                                        type: string
+                                      streetType:
+                                        type: string
+                                      unitType:
+                                        type: string
+                                      zip4Code:
+                                        type: string
+                                      zip4Flag:
+                                        type: string
+                                      zip5Code:
+                                        type: string
+                                      zip5Flag:
+                                        type: string
+                                      zipCarrierRoute:
+                                        type: string
+                            SubjectPhone:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  sourceIndicator:
+                                    type: string
+                                  phoneQualifier:
+                                    type: string
+                                  phoneType:
+                                    type: string
+                                  availabilityIndicator:
+                                    type: string
+                                  areaCode:
+                                    type: string
+                                  phoneNumber:
+                                    type: string
+                                  extension:
+                                    type: string
+                                  use:
+                                    type: string
+                                  unparsedPhoneNumber:
+                                    type: string
+                            SubjectEmployment:
+                              type: array
+                              items:
+                                type: object
+                                properties:
+                                  sourceIndicator:
+                                    type: string
+                                  effectiveDate:
+                                    type: string
+                                  onFileSinceDate:
+                                    type: string
+                                  employerName:
+                                    type: string
+                                  occupation:
+                                    type: string
+                                  dateHired:
+                                    type: string
+                                  dateSeparated:
+                                    type: string
+                                  income:
+                                    type: string
+                                  payBasis:
+                                    type: string
+                                  EmploymentAddress:
+                                    type: object
+                                    properties:
+                                      sourceIndicator:
+                                        type: string
+                                      dateReported:
+                                        type: string
+                                      standardizedFlag:
+                                        type: string
+                                      urbanizationName:
+                                        type: string
+                                      housingStatus:
+                                        type: string
+                                      AddressData:
+                                        type: object
+                                        properties:
+                                          addressMatchCode:
+                                            type: string
+                                          addressType:
+                                            type: string
+                                          apartmentNumber:
+                                            type: string
+                                          apartmentNumberFlag:
+                                            type: string
+                                          cityName:
+                                            type: string
+                                          cityNameFlag:
+                                            type: string
+                                          cityStateZip:
+                                            type: string
+                                          correlationIdentifier:
+                                            type: string
+                                          countryCode:
+                                            type: string
+                                          county:
+                                            type: string
+                                          countyFIPSCode:
+                                            type: string
+                                          houseNumber:
+                                            type: string
+                                          houseNumberFlag:
+                                            type: string
+                                          housingStatus:
+                                            type: string
+                                          latitude:
+                                            type: string
+                                          line1Text:
+                                            type: string
+                                          line2Text:
+                                            type: string
+                                          longitude:
+                                            type: string
+                                          predirectional:
+                                            type: string
+                                          postdirectional:
+                                            type: string
+                                          stateCode:
+                                            type: string
+                                          stateCodeFlag:
+                                            type: string
+                                          streetName:
+                                            type: string
+                                          streetNameFlag:
+                                            type: string
+                                          streetType:
+                                            type: string
+                                          unitType:
+                                            type: string
+                                          zip4Code:
+                                            type: string
+                                          zip4Flag:
+                                            type: string
+                                          zip5Code:
+                                            type: string
+                                          zip5Flag:
+                                            type: string
+                                          zipCarrierRoute:
+                                            type: string
+                            EmploymentPhone:
+                              type: object
+                              properties:
+                                sourceIndicator:
+                                  type: string
+                                phoneQualifier:
+                                  type: string
+                                phoneType:
+                                  type: string
+                                availabilityIndicator:
+                                  type: string
+                                areaCode:
+                                  type: string
+                                phoneNumber:
+                                  type: string
+                                extension:
+                                  type: string
+                                use:
+                                  type: string
+                                unparsedPhoneNumber:
+                                  type: string
+                            alsoKnownAs:
+                              type: array
+                              items:
+                                type: string
+                        CreditScore:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              serviceStatus:
+                                type: string
+                              serviceSearchStatus:
+                                type: string
+                              scoreModelConditionDetail:
+                                type: string
+                              serviceCode:
+                                type: string
+                              score:
+                                type: string
+                              scoreIndicatorFlag:
+                                type: string
+                              scoreDerogAlertFlag:
+                                type: string
+                              scoringFactor:
+                                type: string
+                              scoreCardIndicator:
+                                type: string
+                        CreditSummary:
+                          type: object
+                          properties:
+                            reportingPeriod:
+                              type: string
+                            publicRecords:
+                              type: string
+                            collections:
+                              type: string
+                            negativeTrades:
+                              type: string
+                            tradesWithHistoricalNegative:
+                              type: string
+                            historicalNegatives:
+                              type: string
+                            trades:
+                              type: string
+                            revolvingCheckCreditTrades:
+                              type: string
+                            installmentTrades:
+                              type: string
+                            mortgageTrades:
+                              type: string
+                            openTradeAccounts:
+                              type: string
+                            unspecifiedPortfolioAccounts:
+                              type: string
+                            inquiries:
+                              type: string
+                        TradeAccountRatingTotal:
+                          type: object
+                          properties:
+                            accountRatingH:
+                              type: string
+                            accountRating9:
+                              type: string
+                            accountRating8:
+                              type: string
+                            accountRating7:
+                              type: string
+                            accountRating6:
+                              type: string
+                            accountRating5:
+                              type: string
+                            accountRating4:
+                              type: string
+                            accountRating3:
+                              type: string
+                            accountRating2:
+                              type: string
+                            accountRating1:
+                              type: string
+                            accountRating0:
+                              type: string
+                            allOther:
+                              type: string
+                            disputedAccounts:
+                              type: string
+                        Trade:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              industryCode:
+                                type: string
+                              memberCode:
+                                type: string
+                              affiliateRemarkCode:
+                                type: string
+                              genericRemarkCode:
+                                type: string
+                              ratingHistoryRemarkCode:
+                                type: string
+                              complianceRemarkCode:
+                                type: string
+                              updateMethodCode:
+                                type: string
+                              effectiveDate:
+                                type: string
+                              openedDate:
+                                type: string
+                              closedDate:
+                                type: string
+                              paidOutDate:
+                                type: string
+                              subscriberName:
+                                type: string
+                              ecoaDesignator:
+                                type: string
+                              portfolioType:
+                                type: string
+                              accountNumber:
+                                type: string
+                              accountType:
+                                type: string
+                              dateClosedIndicator:
+                                type: string
+                              currentBalanceAmount:
+                                type: string
+                              highCreditAmount:
+                                type: string
+                              creditLimitAmount:
+                                type: string
+                              termsPaymentScheduleMonthCount:
+                                type: string
+                              termsFrequencyOfPayment:
+                                type: string
+                              termsMonthlyPaymentAmount:
+                                type: string
+                              actualPaymentAmount:
+                                type: string
+                              lastPaymentDate:
+                                type: string
+                              currentAccountRating:
+                                type: string
+                              paymentPatternStartDate:
+                                type: string
+                              paymentPattern:
+                                type: string
+                              numberMonthsReviewed:
+                                type: string
+                              times30DaysLate:
+                                type: string
+                              times60DaysLate:
+                                type: string
+                              times90DaysLate:
+                                type: string
+                              amountPastDue:
+                                type: string
+                              firstDelinquencyDate:
+                                type: string
+                              highestPastDueAmount:
+                                type: string
+                              highestPastDueAmountDate:
+                                type: string
+                              highestPastDueAmountAccountRating:
+                                type: string
+                              earliestHighestPastDueAmountDate:
+                                type: string
+                              earliestHighestPastDueAmountAccountRating:
+                                type: string
+                              maximumDelinquencyAccountRating:
+                                type: string
+                              maximumDelinquencyAmount:
+                                type: string
+                              maximumDelinquencyDate:
+                                type: string
+                              earliestMaximumDelinquencyAmount:
+                                type: string
+                              earliestMaximumDelinquencyDate:
+                                type: string
+                        Collection:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              industryCode:
+                                type: string
+                              memberCode:
+                                type: string
+                              effectiveDate:
+                                type: string
+                              openedDate:
+                                type: string
+                              closedDate:
+                                type: string
+                              paidOutDate:
+                                type: string
+                              ecoaDesignator:
+                                type: string
+                              collectionAgencyName:
+                                type: string
+                              portfolioType:
+                                type: string
+                              accountNumber:
+                                type: string
+                              accountType:
+                                type: string
+                              creditorName:
+                                type: string
+                              creditorClassification:
+                                type: string
+                              dateClosedIndicator:
+                                type: string
+                              currentBalanceAmount:
+                                type: string
+                              pastDueAmount:
+                                type: string
+                              currentAccountRating:
+                                type: string
+                              originalBalanceAmount:
+                                type: string
+                              firstDelinquencyDate:
+                                type: string
+                              lastPaymentDate:
+                                type: string
+                              affiliateRemarkCode:
+                                type: string
+                              genericRemarkCode:
+                                type: string
+                              ratingHistoryRemarkCode:
+                                type: string
+                              complianceRemarkCode:
+                                type: string
+                              updateMethodCode:
+                                type: string
+                        PublicRecord:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              industryCode:
+                                type: string
+                              memberCode:
+                                type: string
+                              filedDate:
+                                type: string
+                              effectiveDate:
+                                type: string
+                              paidOutDate:
+                                type: string
+                              ecoaDesignator:
+                                type: string
+                              publicRecordType:
+                                type: string
+                              docketNumber:
+                                type: string
+                              attorney:
+                                type: string
+                              plaintiff:
+                                type: string
+                              assets:
+                                type: string
+                              liabilityAmount:
+                                type: string
+                              originalBalanceAmount:
+                                type: string
+                              currentBalanceAmount:
+                                type: string
+                              courtLocationCity:
+                                type: string
+                              courtLocationState:
+                                type: string
+                              courtTypeCode:
+                                type: string
+                        Inquiry:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              bureauMarket:
+                                type: string
+                              bureauSubMarket:
+                                type: string
+                              industryCode:
+                                type: string
+                              memberCode:
+                                type: string
+                              subscriberName:
+                                type: string
+                              inquiryECOADesignatorType:
+                                type: string
+                              accountType:
+                                type: string
+                              dateOfInquiry:
+                                type: string
+                              requestorName:
+                                type: string
+                        IDMismatchAlert:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              addressType:
+                                type: string
+                              messageType:
+                                type: string
+                              alertCondition:
+                                type: string
+                              numberOfInquiriesLast60Days:
+                                type: string
+                        AddressAnalysis:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              inputAddressIndex:
+                                type: string
+                              fileAddressIndex:
+                                type: string
+                              houseNumberMatch:
+                                type: string
+                              preDirectionalMatch:
+                                type: string
+                              streetNameMatch:
+                                type: string
+                              streetTypeMatch:
+                                type: string
+                              cityNameMatch:
+                                type: string
+                              stateCodeMatch:
+                                type: string
+                              zipCodeMatch:
+                                type: string
+                              apartmentNumberMatch:
+                                type: string
+                        CreditSummaryDescription:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              summaryType:
+                                type: string
+                              highCredit:
+                                type: string
+                              creditLimit:
+                                type: string
+                              balance:
+                                type: string
+                              amountPastDue:
+                                type: string
+                              monthlyPayment:
+                                type: string
+                              percentCreditAvailable:
+                                type: string
+                        ConsumerStatement:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              contentType:
+                                type: string
+                              contentText:
+                                type: string
+                    Attachment:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          recordID:
+                            type: string
+                          startDate:
+                            type: string
+                          endDate:
+                            type: string
+                          score:
+                            type: string
+                          ScoreModel:
+                            type: object
+                            properties:
+                              characteristicType:
+                                type: string
+                              characteristicValue:
+                                type: string
+                              modelCode:
+                                type: string
+                          caseNumber:
+                            type: string
+                          secondaryType:
+                            type: string
+                          secondarySubType:
+                            type: string
+                          consumerName:
+                            type: string
+                          createTimestamp:
+                            type: string
+                          attachmentID:
+                            type: string
+                          attachmentType:
+                            type: string
+                          reportID:
+                            type: string
+                          reportType:
+                            type: string
+                          History:
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                recordID:
+                                  type: string
+                                status:
+                                  type: string
+                                startDate:
+                                  type: string
+                                endDate:
+                                  type: string
+                                score:
+                                  type: string
+                                ScoreModel:
+                                  type: object
+                                  properties:
+                                    characteristicType:
+                                      type: string
+                                    characteristicValue:
+                                      type: string
+                                    modelCode:
+                                      type: string
+                                caseNumber:
+                                  type: string
+                                secondaryType:
+                                  type: string
+                                secondarySubType:
+                                  type: string
+                                userID:
+                                  type: string
+                                consumerName:
+                                  type: string
+                                createTimestamp:
+                                  type: string
+              Errors:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    errorCode:
+                      type: string
+                    errorMessage:
+                      type: string
+              TransactionalData:
+                type: object
+                properties:
+                  consumingSystemName:
+                    type: string
+                  consumerRequestPurpose:
+                    type: string
+                  consumerTransactionID:
+                    type: string
+                  userId:
+                    type: string
+                  orderId:
+                    type: string
+                  reportQualifyingAgeUnit:
+                    type: string
+                  reportQualifyingAge:
+                    type: string
+                  forceOrder:
+                    type: string
+                  unmatchedSubjectOrdering:
+                    type: string
+                  enableFailedMessageProcessing:
+                    type: string
+                  processingMode:
+                    type: string
+                  effectiveDate:
+                    type: string
+                  nameMatchInd:
+                    type: string
+                  reMatch:
+                    type: string
+                  returnErrorType:
+                    type: string
+                  reprocessBatchOnlyErrors:
+                    type: string
+                  searchMethod:
+                    type: string
+                  returnAttchSection:
+                    type: string
+                  attchQualifyingAgeMonths:
+                    type: string
+                  requestLengthOfResidenceData:
+                    type: string
+                  correlationId:
+                    type: string
+                  userReferenceNumber:
+                    type: string
+                  transitionPolicyRequest:
+                    type: string
+                  requestMaritalStatusData:
+                    type: boolean
+                  requestFullVendorResponse:
+                    type: boolean
+              status:
+                type: object
+                properties:
+                  reason:
+                    type: string
+                  code:
+                    type: integer
+                  transactionID:
+                    type: string
+                  messages:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        code:
+                          type: integer
+                        description:
+                          type: string
+                        details:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              description:
+                                type: string
+                              field:
+                                type: string
+                        level:
+                          type: string
+                  maxMessageLevel:
+                    type: string
+                  metrics:
+                    type: object
+                    properties:
+                      acceptedOn:
+                        type: string
+                      returnedOn:
+                        type: string
+    ErrorBadRequest:
+      description: Bad Request
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/Cache-Control"
+        Strict-Transport-Security:
+          $ref: "#/components/headers/Strict-Transport-Security"
+        Content-Security-Policy:
+          $ref: "#/components/headers/Content-Security-Policy"
+        X-Frame-Options:
+          $ref: "#/components/headers/X-Frame-Options"
+        X-Content-Type-Options:
+          $ref: "#/components/headers/X-Content-Type-Options"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            BadRequest:
+              $ref: "#/components/examples/ErrorBadRequest"
+    ErrorUnauthorized:
+      description: Unauthorized
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/Cache-Control"
+        Strict-Transport-Security:
+          $ref: "#/components/headers/Strict-Transport-Security"
+        Content-Security-Policy:
+          $ref: "#/components/headers/Content-Security-Policy"
+        X-Frame-Options:
+          $ref: "#/components/headers/X-Frame-Options"
+        X-Content-Type-Options:
+          $ref: "#/components/headers/X-Content-Type-Options"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            Unauthorized:
+              $ref: "#/components/examples/ErrorUnauthorized"
+    ErrorForbidden:
+      description: Forbidden
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/Cache-Control"
+        Strict-Transport-Security:
+          $ref: "#/components/headers/Strict-Transport-Security"
+        Content-Security-Policy:
+          $ref: "#/components/headers/Content-Security-Policy"
+        X-Frame-Options:
+          $ref: "#/components/headers/X-Frame-Options"
+        X-Content-Type-Options:
+          $ref: "#/components/headers/X-Content-Type-Options"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            Forbidden:
+              $ref: "#/components/examples/ErrorForbidden"
+    ErrorNotFound:
+      description: Not Found
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/Cache-Control"
+        Strict-Transport-Security:
+          $ref: "#/components/headers/Strict-Transport-Security"
+        Content-Security-Policy:
+          $ref: "#/components/headers/Content-Security-Policy"
+        X-Frame-Options:
+          $ref: "#/components/headers/X-Frame-Options"
+        X-Content-Type-Options:
+          $ref: "#/components/headers/X-Content-Type-Options"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            NotFound:
+              $ref: "#/components/examples/ErrorNotFound"
+    ErrorMethodNotAllowed:
+      description: Method Not Allowed
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/Cache-Control"
+        Strict-Transport-Security:
+          $ref: "#/components/headers/Strict-Transport-Security"
+        Content-Security-Policy:
+          $ref: "#/components/headers/Content-Security-Policy"
+        X-Frame-Options:
+          $ref: "#/components/headers/X-Frame-Options"
+        X-Content-Type-Options:
+          $ref: "#/components/headers/X-Content-Type-Options"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            NotFound:
+              $ref: "#/components/examples/ErrorMethodNotAllowed"
+    ErrorContentTooLarge:
+      description: Content Too Large
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/Cache-Control"
+        Strict-Transport-Security:
+          $ref: "#/components/headers/Strict-Transport-Security"
+        Content-Security-Policy:
+          $ref: "#/components/headers/Content-Security-Policy"
+        X-Frame-Options:
+          $ref: "#/components/headers/X-Frame-Options"
+        X-Content-Type-Options:
+          $ref: "#/components/headers/X-Content-Type-Options"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            ContentTooLarge:
+              $ref: "#/components/examples/ErrorContentTooLarge"
+    ErrorTooManyRequests:
+      description: Too Many Requests
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/Cache-Control"
+        Strict-Transport-Security:
+          $ref: "#/components/headers/Strict-Transport-Security"
+        Content-Security-Policy:
+          $ref: "#/components/headers/Content-Security-Policy"
+        X-Frame-Options:
+          $ref: "#/components/headers/X-Frame-Options"
+        X-Content-Type-Options:
+          $ref: "#/components/headers/X-Content-Type-Options"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            TooManyRequests:
+              $ref: "#/components/examples/ErrorTooManyRequests"
+    ErrorInternalServerError:
+      description: Internal Server Error
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/Cache-Control"
+        Strict-Transport-Security:
+          $ref: "#/components/headers/Strict-Transport-Security"
+        Content-Security-Policy:
+          $ref: "#/components/headers/Content-Security-Policy"
+        X-Frame-Options:
+          $ref: "#/components/headers/X-Frame-Options"
+        X-Content-Type-Options:
+          $ref: "#/components/headers/X-Content-Type-Options"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            InternalServerError:
+              $ref: "#/components/examples/ErrorInternalServerError"
+    ErrorBadGateway:
+      description: Bad Gateway
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/Cache-Control"
+        Strict-Transport-Security:
+          $ref: "#/components/headers/Strict-Transport-Security"
+        Content-Security-Policy:
+          $ref: "#/components/headers/Content-Security-Policy"
+        X-Frame-Options:
+          $ref: "#/components/headers/X-Frame-Options"
+        X-Content-Type-Options:
+          $ref: "#/components/headers/X-Content-Type-Options"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            BadGateway:
+              $ref: "#/components/examples/ErrorBadGateway"
+    ErrorServiceUnavailable:
+      description: Service Unavailable
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/Cache-Control"
+        Strict-Transport-Security:
+          $ref: "#/components/headers/Strict-Transport-Security"
+        Content-Security-Policy:
+          $ref: "#/components/headers/Content-Security-Policy"
+        X-Frame-Options:
+          $ref: "#/components/headers/X-Frame-Options"
+        X-Content-Type-Options:
+          $ref: "#/components/headers/X-Content-Type-Options"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            BadGateway:
+              $ref: "#/components/examples/ErrorServiceUnavailable"
+    ErrorGatewayTimeout:
+      description: Gateway Timeout
+      headers:
+        Cache-Control:
+          $ref: "#/components/headers/Cache-Control"
+        Strict-Transport-Security:
+          $ref: "#/components/headers/Strict-Transport-Security"
+        Content-Security-Policy:
+          $ref: "#/components/headers/Content-Security-Policy"
+        X-Frame-Options:
+          $ref: "#/components/headers/X-Frame-Options"
+        X-Content-Type-Options:
+          $ref: "#/components/headers/X-Content-Type-Options"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          examples:
+            BadGateway:
+              $ref: "#/components/examples/ErrorGatewayTimeout"
+  examples:
+    ErrorBadRequest:
+      summary: Bad Request
+      value:
+        status:
+          code: 400
+          reason: BadRequest
+          afe-trace-id: f5d305cf-cc02-48b7-9d65-904f9dd78bd0
+          maxMessageLevel: ERROR
+          messages:
+            - code: 400001
+              level: ERROR
+              description: Request payload issue
+    ErrorUnauthorized:
+      summary: Unauthorized
+      value:
+        status:
+          code: 401
+          reason: Unauthorized
+          afe-trace-id: f5d305cf-cc02-48b7-9d65-904f9dd78bd0
+          maxMessageLevel: ERROR
+          messages:
+            - code: 401001
+              level: ERROR
+              description: Api key is invalid
+    ErrorForbidden:
+      summary: Forbidden
+      value:
+        status:
+          code: 403
+          reason: Forbidden
+          afe-trace-id: f5d305cf-cc02-48b7-9d65-904f9dd78bd0
+          maxMessageLevel: ERROR
+          messages:
+            - code: 403001
+              level: ERROR
+              description: Not allowed to access this resource
+    ErrorNotFound:
+      summary: Bad Request Example
+      value:
+        status:
+          code: 400
+          reason: Bad Request
+          afe-trace-id: f5d305cf-cc02-48b7-9d65-904f9dd78bd0
+          maxMessageLevel: ERROR
+          messages:
+            - code: 400001
+              level: ERROR
+              description: Bad Request
+    ErrorMethodNotAllowed:
+      summary: Method Not Allowed Example
+      value:
+        status:
+          code: 405
+          reason: Method Not Allowed
+          afe-trace-id: f5d305cf-cc02-48b7-9d65-904f9dd78bd0
+          maxMessageLevel: ERROR
+          messages:
+            - code: 405001
+              level: ERROR
+              description:
+                The resource does not support the requested method (GET,
+                POST, PUT, or DELETE).
+    ErrorContentTooLarge:
+      summary: Payload Too Large
+      value:
+        status:
+          code: 413
+          reason: Payload Too Large
+          afe-trace-id: f5d305cf-cc02-48b7-9d65-904f9dd78bd0
+          maxMessageLevel: ERROR
+          messages:
+            - code: 413001
+              level: ERROR
+              description: Request message size exceeded maximum allowed
+    ErrorTooManyRequests:
+      summary: Too Many Requests
+      value:
+        status:
+          code: 429
+          reason: Too Many Requests
+          afe-trace-id: f5d305cf-cc02-48b7-9d65-904f9dd78bd0
+          maxMessageLevel: ERROR
+          messages:
+            - code: 429001
+              level: ERROR
+              description: Too Many Requests
+    ErrorInternalServerError:
+      summary: Internal Server Error
+      value:
+        status:
+          code: 500
+          reason: Internal Server Error
+          afe-trace-id: f5d305cf-cc02-48b7-9d65-904f9dd78bd0
+          maxMessageLevel: ERROR
+          messages:
+            - code: 500001
+              level: ERROR
+              description: Configuration Error
+    ErrorBadGateway:
+      summary: Bad Gateway
+      value:
+        status:
+          code: 502
+          reason: Bad Gateway
+          afe-trace-id: f5d305cf-cc02-48b7-9d65-904f9dd78bd0
+          maxMessageLevel: ERROR
+          messages:
+            - code: 502001
+              level: ERROR
+              description: Backend Failure
+    ErrorServiceUnavailable:
+      summary: ServiceUnavailable
+      value:
+        status:
+          code: 503
+          reason: Service Unavailable
+          afe-trace-id: f5d305cf-cc02-48b7-9d65-904f9dd78bd0
+          maxMessageLevel: ERROR
+          messages:
+            - code: 503001
+              level: ERROR
+              description: Backend Failure
+    ErrorGatewayTimeout:
+      summary: Gateway Timeout
+      value:
+        status:
+          code: 504
+          reason: Gateway Timeout
+          afe-trace-id: f5d305cf-cc02-48b7-9d65-904f9dd78bd0
+          maxMessageLevel: ERROR
+          messages:
+            - code: 504001
+              level: ERROR
+              description: Backend Timeout

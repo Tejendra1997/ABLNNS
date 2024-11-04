@@ -31,7 +31,7 @@ WORK BASED POINTS
 • Extract variable policy lo gani msg templates lo ni xpath() function dwaraa gani manam xml payload lo ni array elements ni extract cheyalemu adi community lo ne undi. Only json payload ki matarme array elements ni extract cheyagalamu xnl ki cheyalemu xml lo only one value ye adi kuda string format lo vastundi.
 • maamulga clients contenttype header lo send chese charset kaakunda api proxy level lo inko encoding petaali ante apudu nv proxyenspoint properties(avunu, ela ithe target endpoint ki properties unaayo alaane proxy endpoint ki kuda unai) ina request.queryparams.ignore.content.type.charset ni true chesta apudu adi cleinet pampichina charset ni ignore chestundi apudu nv proxy lo niku kaavalsindi raayachu. okavela clinets send chesedhe kaavalia  anukunte apudu either false or tag ni complete ga omit cheyadamo cheyali.
 • kvm json objects ni as it is ga petayachu tarvaata code lo JSO.parse() method vaadi object laa conevert chesukovachu etuvanti escape charcters vaadabaledu kvm lo json ni store chesukodaaniki. kaakapothe nv kvm lo entry anedi direct ui nunchi kaakunda api mgmt call dwaara istunte apudu nv ah json ni escape charcter vaadi send cheyali (ante string formate lo send cheyali anamaata) endukantre api mgt call anedi json object ni alaaa as it is paampista valedu andukani escape character vaadalai but adi  velli store itedi maatram normal actual json laane etuvanti escape charcters undavu. so at last chepedi entatnet kvm lojson objects as it is petachu etuvantii escape charcters vaadabaledu.
-• Host header anedi automatic ga generate iye header , idhi nv eval lo ni proxy ni hit chesinapudu host: tejandras@eval.com ani untundi (And deeni okavela proxy lo overwrite cheyalante ProxyEndpoint lo request.header.host flow var use chesi overwrite cheyachu) and ah proxy anedi suppose httpbin.org/anuything endpoint ni hit chestundi anuko apudu ah endpoint vellinapuidu host value anedi "htpbin.org" ani untundi idhi gurthupetuko nv tejandras-eval.org ye untaadi anukunaavu inni rohjulu ala kaadu ye endpoint ni hit chestundo request automatic ga ah hit cheyabotuna endpoint host anedi host header value ga vastaadi so ala cl;ient to api proxy hit chesinapudu host value apigee url host and proxy nunchi target endpoint ni hit chesetapudu host value vachi qah target endpoint url host. so ala ye endpoint ni hit cheste ah endpoint yoka url host vachi hpost herader value laaga maaripothuuu untaadi (service callout policy lo call chese endpoint ki kuda anthe). Okavela ee target endpoint ki velle host  header value ni maarchalante nv target.header.host flow var ni targetendpoint lo use cheste change avutundi. ee target.header.host flow var's unai ani niku document lo kuda mention cheyaledu but existance lo unai gurthu petuko. And proxy endpoint & target enpoint ki diff lo proxy.path.suffix, target.url,target.status.code tho paatu ee target.header.host var ni mention chai.
+• Host header anedi automatic ga generate iye header , idhi nv eval lo ni proxy ni hit chesinapudu host: tejandras@eval.com ani untundi (And deeni okavela proxy lo overwrite cheyalante ProxyEndpoint lo request.header.host flow var use chesi overwrite cheyachu) and ah proxy anedi suppose httpbin.org/anuything endpoint ni hit chestundi anuko apudu ah endpoint vellinapuidu host value anedi "htpbin.org" ani untundi idhi gurthupetuko nv tejandras-eval.org ye untaadi anukunaavu inni rohjulu ala kaadu ye endpoint ni hit chestundo request automatic ga ah hit cheyabotuna endpoint host anedi host header value ga vastaadi so ala clfl;aient to api proxy hit chesinapudu host value apigee url host and proxy nunchi target endpoint ni hit chesetapudu host value vachi qah target endpoint url host. so ala ye endpoint ni hit cheste ah endpoint yoka url host vachi hpost herader value laaga maaripothuuu untaadi (service callout policy lo call chese endpoint ki kuda anthe). Okavela ee target endpoint ki velle host  header value ni maarchalante nv target.header.host flow var ni targetendpoint lo use cheste change avutundi. ee target.header.host flow var's unai ani niku document lo kuda mention cheyaledu but existance lo unai gurthu petuko. And proxy endpoint & target enpoint ki diff lo proxy.path.suffix, target.url,target.status.code tho paatu ee target.header.host var ni mention chai.
 • ika nunchi edaina timezone value kaavalante nv js objects lo uyna crypto object lo ni crypto.dateFormat();
 
 
@@ -157,7 +157,7 @@ Flow Variables
 CR,TS,TR,CS
 -----------
 • client.recieved.start.timestamp ==> The time at which the proxy starts recieving the request from originating client, client.recieved.end.timestamp ==> The time at which the proxy complety recieves the request from the originating client.
-• target.sent.starttime => The time at which the proxy starts to send the request to the URL, target.sent.end.timestamp => The time at which the proxy completely sends the request to the URL
+• target.sent.start.timestamp => The time at which the proxy starts to send the request to the URL, target.sent.end.timestamp => The time at which the proxy completely sends the request to the URL
 • target.recieved.start.timestamp => The time at which the TargetEndpoint gateway starts reciving the response from backend URL, target.recieved.end.timestamp => The time at whcih the TARGETENDPOINT gateway compltely recieves the response from backend URL
 • client.sent.start.timestamp => The time at which the proxy starts sending the response to the originating client, client.sent.end.timestamp => The time at which the proxy completes sends the response to the originating client.
 
@@ -304,6 +304,14 @@ Verify api key-file
 -------------------
 • Verify api key policy is used to check whether the client is allowed to make request to an api proxy by validating the api key in request.
 • it also contains one tag on how much time the apikey should be stored in cache from 1-180 seconds(L1 OR message processor or in-memory). if you dont include that element then by default will be 180seconnds
+
+oauthV2.policy_name.failed: true
+fault.name:  InvalidApiKey
+error.message:  Invalid ApiKey
+fault.reason:  Invalid ApiKey
+fault.category:  Step
+fault.subcategory:  Execution
+fault.cause:  null
 
 Access Control
 ------------------
@@ -498,6 +506,26 @@ XML TO JSON
 Raise Fault
 ===========
 • Raiae fault policy is used to raise errors for custom conditions so that proxy execution will move from normal flow to error flow and no any other policies in normal flow will execute.
+
+raisefault.failed:  true
+raisefault.policy_name.failed:  true
+fault.name:  RaiseFault
+error.message:  Raising fault. Fault name : RF-UnresolvedApiKey
+fault.reason:  Raising fault. Fault name : RF-UnresolvedApiKey
+fault.category:  Step
+fault.subcategory:  RaiseFault
+fault.cause:  null
+
+Docode jwt
+==========
+JWT.failed:  true
+JWT.policy_name.failed:  true
+fault.name:  FailedToResolveVariable
+error.message:  Failed to Resolve Variable : policy(Decode-JWT-1) variable(null)
+fault.reason:  Failed to Resolve Variable : policy(Decode-JWT-1) variable(null)
+fault.category:  Step
+fault.subcategory:  JwtFailure
+fault.cause:  null
 
 XSLT
 ====

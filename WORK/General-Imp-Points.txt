@@ -42,7 +42,7 @@ Server Means (Node = Virtaul (or) Physical Machine = Server = VM ware = computer
 ============
 • kubernetes lo una worker node ni virtsal machine or physical machine antaaru (Virtual or physical machine ante ento niku telusu, its a computer). ah node ne server ani kuda antaaru. So Node = Virtaul (or) Physical Machine = Server
 
-Virtaul Network Means (Virtual Network = Ipaddress = Virtual Host = Virtual service)
+Virtaul Network Means (Virtual Network = Ipaddress = Virtual  = Virtual service)
 =====================
 • Idhi virtual network, virtual machine kadu. so virtual network ante ipaddress ani ardam. Virtual Network = Ipadress
 
@@ -582,6 +582,26 @@ CORS (Cross Origin Resource Sharing)
 Access to XMLHttpRequest at 'https://tejandras-eval-test.apigee.net/ttt' from origin 'https://test-cors.org' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: The 'Access-Control-Allow-Origin' header contains multiple values 'https://test-cors.org, https://test-cors.org', but only one is allowed.
 Access to XMLHttpRequest at 'https://tejandras-eval-test.apigee.net/ttt' from origin 'https://test-cors.org' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
+API Response Security Headers
+=============================
+1. Strict-Transport-Security (HSTS)
+-----------------------------------
+* 
+
+
+OAS vs Swagger
+==============
+OpenAPI = Specification
+Swagger = Tools for implementing the specification
+
+
+
+Top OAS validator tools
+=======================
+Swagger validator
+Spectral
+OpenAPI lint 
+Apidog
 
 Default Port Numbers
 ====================
@@ -590,6 +610,57 @@ Default Port Numbers
 • nodejs ==> 3000 (anduke kada ye js apploication ni ina 3000 port  number tho ne configure chestunaaru)
 • java ==> 8080
 • python ==> 8000
+
+
+key, value, property, attribute
+===============================
+* key ante yaml or json lo gani left side lo unade
+* value ante yaml or json lo gani right side lo undede
+* yaml lo keys ki baduluga attribute ani kuda anachu like age is a attribute of teja objects, but ekuvuga key ane pilisutaaru kani chepanu kada attribute ani kuda pilavachu but mostly key ane pilustaaru ani gurthu petuko. ide rakanga json lo kuda left side ni key ki baduluga attribute of some object ani pilvachu but key ane ekuva pilistaaru so enduku vachina godava annitini keys and values ani pilichai leda json keys and avalues ani pilchi yaml ki vache sariki attribute and value ani piolichai saripodhi
+* property ante json lo key value pair ni proiperty antaaru, ide vidamga yaml lo kuda key value pair ni property anachu anata.
+
+Request Parameters
+==================
+1. URI parameters
+2. Query params
+3. Header paramenters
+4. Form parametrers(x-www-form-urlencoded, mulitpart/form-data)
+
+1.URI parameters: (Resource)
+-----------------
+* Ye resource ithe hit cheyalanukuntunaamo dani yoka details ee URI paramas lo untai.
+
+2. Query parameters (Filter)
+-------------------
+* idi nv inthakamundu telusukuna defintion ye URI parmas lo specifuy chesina resource lo una data motham lo ye particular data kavali ani fileter / sort / search cheyaniki e query paramas use avtai. 
+* stuident recoird example telusu kada same alaana amfam lo kuda SF-CyberArk-v1 sharedflow lo https://ccp.amfam.com/AIMWebService/api/Accounts ee target url ki hit chesi manam techukune azure api app creds kuda manam eee sgharedflow lo safe-name, application-id & app-name data ni queryparams lo send chesi resource data ni fileter chesi techukuntunaamu.
+
+3. Header Pramaetrs (Metadata)
+-------------------
+* Request yoka meta data untundi ee header parametsers lo like content-type, content-length, apu-key, authorization, security headers like cache......, elago ee info anedi URL lo kanabadadhu adi telisinde
+
+4. Form parameters
+------------------
+* form parametrs ante nv inaalu query parama, header params, uri params lanti category lo anukunaavu anduke niku form paramaetrs anam gane emi valgadhu blank untadi, kani ipudu chepubna idi actual ga request body category lo unde parametrs anmaata. Ela ante deenilo kuda same request body ina json, xml lo ela ithe data ni send chestamo alaaane ikada kuda key value formate lo forma parametrs ni use chesukini data ni send chestam. so inkatnunchi form paramaets ante query params category lo kaakunda ee request body category lo ki gurthutechko so apudu niku velugutaadi.
+* Ee form paramerts lo 2 types unai. 
+	a) x-www-form-urlencoded
+		- Idhi small key value formate lo una data ni send cheyadaniki use chese format.
+		- perukio taggatle deeenilo specify chesina key value data anedi URL encoded formate lo veltundi ante special characters anii vere characters tho replace avtai anamaata.
+		- max andaru form parametrs anate vadadhiu ee x-www-form-urlencoded formate ye. Apigee lo manam s
+	b) muiltipart/form-data
+		- Idhi ekuva content una data ni key value formate lo, binary data formate lo, text file formate lo, vere itara file formats like json, xml, python, jpeg..... eee anni formats lo data ni send cheyali ante ee multipart/formd-data ni use chestam. inni rakaala formats ni support chestundi kaabate perulone iundi "multipart" ani ante anni rakaala parts/file formats ni support chestundi kaabatti.  so inka nunchi evadaina multipart/form-data ante niku teliseyaali deenilo large contents or files ni send chestunaariu ani.
+		- kinda una example lo "----------------------------430561686531035887268797" anedi prathi form parameter part ni segregate cheyaniki use chese boundary adi. ee boundary niku content-type header lo kanipistadi like "multipart/formdata; boundary=----------------------------430561686531035887268797" ani
+		- Eg:	----------------------------430561686531035887268797
+				Content-Disposition: form-data; name="k1"
+
+				v1
+				----------------------------430561686531035887268797
+				Content-Disposition: form-data; name="k2"
+
+				v2
+				----------------------------430561686531035887268797--
+* But mostly chaal varaku "x-www-form-url-encoded": formate ne use chese avasaram vastundi enduka anta files / large / binary data ni send chese chance niku epudu ye project lo raledu soo andaru x-www-form-urlencoded formate ye use chestaru. Apigee lo kuda assign message policy lo support chese forma paramets type chuste adi x-www-form-urlencoded format lo untundi and amfam lo kuda postman lo azure token generation URL ki nv send chese scope, grant-type and sharedflow lo service callout lo auth0 token geenratiuon URL ki chese call and okta & azure token generation ki send chese request lo ee x-wwww-form-urlencoded formate ye use chestunaam. so deeni batti niku ardam avtadi mostly 99% varaku x-www-form-urlencoded formate ye use chestaru multipart/form-data anedi chaala rudga use chestaru ani.
+
 
 TEAMS
 =====
@@ -643,6 +714,9 @@ tejendrasada29@gmail.com
 EPF LINKS
 =========
 EPF Passbook Login: https://passbook.epfindia.gov.in/MemberPassBook/login?error=invalid-token
+
+
+
 
 
 

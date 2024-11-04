@@ -1,0 +1,140 @@
+OpenApiSpec vs Swagger
+======================
+• Openapispec is used to define the specifications of a restfull API
+•Swagger is a tool which is used to create the openapispecifications through swagger editor, sweagger UI
+
+
+
+
+
+Componenets of an openapispecification
+======================================
+• openapi: Defines the version of openapi
+• Info section contains the information of an api like title, description & version
+• paths sections contains the list of endpoints supported by the api
+• servers contains the target endpoint details
+• components defines the request, response & error content details 
+• Security schemas defines the type of security that the api is having like basicauth, api key, oauth...
+• OAS lo imp component vachi securityShemes, ee securitySchemnes gurunchi telusukovali antte first authentication and authorization teluskovadam imp.
+
+
+
+
+
+Authentication & Authorization
+==============================
+• Authentication(Login) answers "who are you?" ante first asalu niku SBI lo account unda leda ani nv credes tho login avagaaen check chesidi idi, okavela unte successfull ga login avtaavu ledante unauthorized kaabatti 401(Unauthorized error throw avudi)
+• Authorization(permissions) answers "what are you allowed to do?" ante niku SBI lo account undi login avagalavu, balance check chesukigalavu, money transfer chesukune permissions kuda untai but nv direct ga account lo names change chesukovali anuko or account deactivate chesukovali anuko adi niku permissions undavau, so authorization ante authenticated user ye but ye ye permissions unaayao vaatiki matrame successfull ga cheyagaladu, permisions lenivi cheyaledi apudu 403(forbidden) erro rvastundi.
+
+securitySchemnes
+================
+• niku in general schema ante ento telusu kada payload content ki same alaaga ikada kuda securityschema ante security yoka schema ante security ni define cheyadam or security ki structre ni define cheyadam ikada chestam and vaatini opertions ki applu=y cheyalaenukunapudu either global levelo lo gani or operational level lo gani define chesina securityscheme ni refer cheyali using security attribute. global lo refer cheste apudu anii operations ki apply avudi okavela both global and opertional level lo refer cheste apudu opertional level ke ekuva priority untaadi
+• securitySchemes lo total 4 types of authentication ni define cheyachu
+    1. http authentication                                      ==>             These schemes use standard HTTP authentication mechanisms. Common types include:
+        - Basic                                                 ==>             Uses the Authorization header with a Base64-encoded username and password.
+        - bearer                                                ==>             Uses the Authorization header with a token (e.g., JWT or OAuth2 access token).
+    2. apikey authentication                                    ==>             This scheme uses an API key sent via headers, query parameters, or cookies to authenticate requests.                          
+        - header                                                ==>             API key is passed as a header
+        - query                                                 ==>             API key is passed as a query parameter
+        - cookie                                                ==>             API key is passed as a cookies
+    3. OAuthv2 authentication                                   ==>             OAuth2 is a widely used authorization framework that allows third-party applications to access an API on behalf of the user.
+        - implicit                                              ==>             Used for browser-based applications (e.g., Single Page Applications).
+        - authorization code                                    ==>             Used for server-to-server communication or client-server applications.
+        - client-credentials                                    ==>             Used for machine-to-machine communication where a client authenticates using a client ID and secret.
+        - password                                              ==>             Used when the client has access to the user’s credentials (usually for first-party clients).
+    4. openIdConnect authetication                              ==>             OpenID Connect builds on top of OAuth2 and provides authentication (i.e., verifying a user's identity). It can be used for Single Sign-On (SSO) and provides an ID token in addition to access tokens.
+
+• only http & apikey scheme matrame ipudu nv deatiled ga prathi attribute chudu oauthve and openidconnect anedi matram apudaina ye project lo ina implement chestane deep ga chudu, so ipudu oathv2 & openidconnect antha deep ga chudabaledu.
+1. http authentication
+    a)BasicAuth:
+        type: http
+        scheme: basic
+
+    b)BearerAuth:                   ==> Ee name anedi anni types lo ni istam vachina relevant name ivachu. anduke manam amfam lo "AzureAD" ani icham ante adi http type bearer schema JWT formate ye but ah token ni authenticate chesedi matarm micerosoftazure kabati manam konchem relvant ga ardam ayale "AzureAD" ani ichamm.
+        type: http                  ==> Ikada kavalate type attribute ki mundi description attribute ni add cheyachu and ee description attribute anedi OAS lo ye ee 4 authetication types(http, apiKey, OAuthv2, openIdConnect) lo danikaina petkovachu alaane kada mana amfam lo azure app deatils and app details add chesaru veelu.
+        scheme: bearer              ==>ikada schema bearer and paina basic ani undi kada avi chusukuntai like idhi Authorization name header lo ne velali ani manam emi explicit ga mention cheyalsina avasaram ledu anduke ikada in ane attribute ledu, mari scheme attribute ante ade kada motham automatic ga avaali kada so idi ala authorization header lo ne value vella tatlu chestundi manam etuvanti explicit in: headfer and name: Authorization ane properties ni define cheyalsina vasaram ledu.
+        bearerFormat: JWT           ==> JWT ante niku telisinde 3 segments lo .(dot) period tho seperate i vastundi ani. JWS ithe 2 r 3 edaina petachu.
+    eg)AzureAD:
+        description: |
+            Azure Oauth 2.0 Client Credential flows
+            ### When requesting access use
+            ### API name: API-Credit-Reports-API-V1-PreProd
+            ### ID : 896abfa1-3a94-44a6-bc69-1b74f528f9eb\n"
+            ### tokenUrl : https://login.microsoftonline.com/b6b2f512-6fd0-42fe-9659-6c5ee67da460/oauth2/v2.0/token
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+2. apiKey authetication             ==> ee apiKey type lo http type lko laaga scheme attribute undadhu anduke anukunta ikada explicit ye param lo send cheyali and dani name entti ani in & name attributes dwara explicit ga mention chestunam. so deeni valla niku inko point kuda telisindi apikey ni motham ga 3 params lo send cheyachu,okati header obvious ga endukante evariki kanapadavu kabatti, rendiu query kani idi url lo kanipistaadi, 3 cookie idi kuda kanapadadhu
+    a)ApikeyAuth:
+        type: apiKey
+        in: header
+        name: X-apikey
+    
+    b)ApikeyQueryAuth:
+        type: apiKey
+        in: query
+        name: q-apikey
+    
+    c)ApikeyCookieAuth:
+        type: apiKey
+        in: cookie
+        name: c-apikey
+         
+3. oauth2 authetication             ==> Actual ga oauth2 anedi authorization kosame vaadutaaru authetication kosam kadu ante ee login avtuna user anevadu SBI lo account unda leda ane authentication idi oauth2 cheyadu only already una existing user ki permissions ni setup chestundi anduke kada scopes ane concept undi oiayth2 lo ante read ah, write ah, edit ah... ani telipedi. So inka nunchi baaga fix ipo oauth2 anedi only authorization purpose ki vaadutaru kani authentication ki kaadau. kaavalante oath2 ni opeidconnect protocol tho combine chesi b=vaadithe authetication kuda vastadi anukunata openidconnect anedi authentication kosam use chestam and oauth2 anedi in gheneral ga only authorization ki use chestam. Ee OAS securitySchemes lo unna anni types lo only oauth2 matrame authorization prpose migilina http, apikey, openIdConnect types maatram authentication ki.
+    a)OAuth2Implicit:               ==> ee oauth2 anni granttypes ni define chese scheme lo etuvatnti scheme attribute undadhu, ila flows object untadi and daanilo una attributes dwara manam send cheyalsina credentials(clientid, clientsecret), authorization code, username & password motham automatic ga niku swagger editor lo chupischestundi anamaata
+        type: oauth2
+        flows:
+            implicit:
+            authorizationUrl: https://example.com/oauth2/authorize
+            scopes:
+                read: Grants read access
+                write: Grants write access
+        
+    b)OAuth2AuthCode:
+        type: oauth2
+        flows:
+            authorizationCode:
+            authorizationUrl: https://example.com/oauth2/authorize
+            tokenUrl: https://example.com/oauth2/token
+            scopes:
+                read: Grants read access
+                write: Grants write access
+            
+    c)OAuth2ClientCredentials:
+        type: oauth2
+        flows:
+            clientCredentials:
+            tokenUrl: https://example.com/oauth2/token
+            scopes:
+                read: Grants read access
+                write: Grants write access
+
+    d)OAuth2Password:
+        type: oauth2
+        flows:
+            password:
+            tokenUrl: https://example.com/oauth2/token
+            scopes:
+                read: Grants read access
+                write: Grants write access
+    eg)OAuth2:
+        type: oauth2
+        flows:
+            authorizationCode:
+            authorizationUrl: https://login.microsoftonline.com/b6b2f512-6fd0-42fe-9659-6c5ee67da460/oauth2/v2.0/authorize
+            tokenUrl: https://login.microsoftonline.com/b6b2f512-6fd0-42fe-9659-6c5ee67da460/oauth2/v2.0/token
+            scopes:
+                'api:access': Azure scope that indicates user is authenticated via SSO
+
+4.OpenIDConnectAuth:
+    type: openIdConnect
+    openIdConnectUrl: https://example.com/.well-known/openid-configuration
+
+
+Choosing the Right Security Scheme:
+===================================
+API Key: Simple APIs where client credentials can be directly passed, such as service-to-service APIs.
+OAuth2: For more complex scenarios requiring delegated access or user authentication (e.g., third-party app integrations).
+HTTP Basic or Bearer Auth: Quick and straightforward to implement, useful for APIs with limited security requirements or internal use.
+OpenID Connect: When you need identity verification and authentication, particularly in Single Sign-On (SSO) scenarios.
+

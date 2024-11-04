@@ -1,0 +1,3498 @@
+openapi: 3.0.0
+info:
+  description: Loan Account Micro-service for operations
+  title: Loan Account Service
+  contact:
+    name: Loan-on-card Squad
+  version: 1.59.1
+  x-provider: loan-account-service
+  x-mox-force-incompatible-changes: true
+  x-status: live
+  x-security:
+    - service
+    - staff
+    - customer
+servers:
+  - description: domain name within VPN
+    url: https://loan-account-service.apps.{env}.projectdrgn.com/v1
+    variables:
+      env:
+        enum:
+          - dev
+          - stg
+        default: stg
+tags:
+  - name: cash-loc-query-controller
+    description: Cash LOC Query Controller
+  - name: cash-loan-command-controller
+    description: Cash loan command controller
+  - name: cash-loc-pricing-controller
+    description: Cash LOC Pricing Controller
+  - name: split-purchase-query-controller
+    description: Split Purchase Query Controller
+  - name: loc-account-query-controller
+    description: LoC Account Query Controller
+  - name: loc-account-command-controller
+    description: LoC Account Command Controller
+  - name: split-purchase-command-controller
+    description: Split purchase commands controller
+  - name: transaction-query-controller
+    description: Transaction Query Controller
+  - name: split-purchase-pricing-controller
+    description: Split Purchase Pricing Controller
+  - name: simulate-loan-controller
+    description: Simulate Loan Controller
+  - name: whitelist-controller
+    description: Whitelist Controller
+  - name: credit-account-query-controller
+    description: Credit Account Query Controller
+  - name: pricing-modifier-command-controller
+    description: Pricing Modifier Command Controller
+  - name: cashback-pricing-command-controller
+    description: Cashback Pricing Command Controller
+paths:
+  /cash:
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - cash-loan-query-controller
+      summary: Get cash loan details by tmId
+      operationId: getCashLoanDetailsByTmId
+      parameters:
+        - $ref: "#/components/parameters/tmId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CashLoanDetailsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  /cash/eligibility-check:
+    post:
+      deprecated: false
+      x-consumers:
+        - loan-account-onboarding-service
+      x-security:
+        - service
+      tags:
+        - cash-loan-command-controller
+      summary: Validate customer eligibility for cash loan
+      operationId: validateEligibility
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/requestId"
+        - $ref: "#/components/parameters/ipAddress"
+        - $ref: "#/components/parameters/webSessionId"
+        - $ref: "#/components/parameters/tmxSessionId"
+      requestBody:
+        $ref: "#/components/requestBodies/CashLoanEligibilityRequest"
+      responses:
+        "200":
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /cash/cli/eligibility-check:
+    post:
+      deprecated: false
+      x-consumers:
+        - loan-account-onboarding-service
+      x-security:
+        - service
+      tags:
+        - cash-loan-command-controller
+      summary: Validate customer eligibility for cash loan STP
+      operationId: validateCliEligibility
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/requestId"
+        - $ref: "#/components/parameters/ipAddress"
+        - $ref: "#/components/parameters/webSessionId"
+        - $ref: "#/components/parameters/tmxSessionId"
+      requestBody:
+        $ref: "#/components/requestBodies/CashLoanCliEligibilityRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CashLoanCliResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  "/cash/{locId}/edit-name":
+    put:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+        - service
+      tags:
+        - cash-loan-command-controller
+      summary: Edit Loan name
+      operationId: editLoanName
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+      requestBody:
+        $ref: "#/components/requestBodies/EditLoanNameRequest"
+      responses:
+        "200":
+          description: OK
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  "/cash/{locId}":
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+        - single-customer-view-service
+      x-security:
+        - customer
+        - staff
+        - service
+      tags:
+        - cash-loan-query-controller
+      summary: Get cash loan details
+      operationId: getCashLoanDetails
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CashLoanDetailsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  "/cash/{locId}/early-repayment":
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+        - service
+        - staff
+      tags:
+        - cash-loan-query-controller
+      summary: Gets Early Repayment Amount of a Cash Loan
+      operationId: getEarlyRepaymentAmountOfCashLoan
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EarlyRepaymentAmountResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+        - service
+      tags:
+        - cash-loan-command-controller
+      summary: Repay cash loan early
+      operationId: repayCashLoanEarly
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+        - $ref: "#/components/parameters/requestId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EarlyRepaymentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /cash/tenor:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+        - single-customer-view-service
+      x-security:
+        - customer
+        - staff
+        - service
+      tags:
+        - cash-loc-query-controller
+      summary: Retrieves tenor range
+      operationId: getCashLocTenorRange
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenorRangeResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+  /cash/prospect/tenor:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+        - staff
+        - service
+      tags:
+        - cash-loc-query-controller
+      summary: Retrieves prospect tenor range
+      operationId: getCashLocProspectTenorRange
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProspectTenorRangeResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+  /cash/amount:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+        - single-customer-view-service
+        - ce-recommendation-service
+      x-security:
+        - customer
+        - service
+        - staff
+      tags:
+        - cash-loc-query-controller
+      summary: Retrieves cash loan amount
+      operationId: getCashLocAmount
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CashLocAmountResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+  /cash/pricing:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+        - single-customer-view-service
+      x-security:
+        - customer
+        - staff
+        - service
+      tags:
+        - cash-loc-pricing-controller
+      summary: Retrieves cash loan pricing table
+      operationId: getCashPricing
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/tenor"
+        - $ref: "#/components/parameters/amount"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PricingResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "503":
+          description: Service Unavailable
+  /cash/prospect/pricing:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+      tags:
+        - cash-loc-pricing-controller
+      summary: Retrieves cash loan prospect pricing table
+      operationId: getCashProspectPricing
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/tenor"
+        - $ref: "#/components/parameters/amount"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProspectPricingResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "503":
+          description: Service Unavailable
+  /cash/upload:
+    post:
+      deprecated: false
+      x-consumers:
+        - drgn-airflow
+      x-security:
+        - service
+      tags:
+        - cash-loc-pricing-controller
+      summary: Upload a cash pricing file to loan-account-service
+      operationId: cashUploadPost
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                file:
+                  type: string
+                effectiveDate:
+                  example: 2023-07-11T16:00:00.000Z
+                  type: string
+                businessCreatedAt:
+                  example: 2019-07-11T16:00:00.000Z
+                  type: string
+                userId:
+                  example: somebody
+                  type: string
+                product:
+                  type: string
+                pricingType:
+                  type: string
+                pricingCode:
+                  type: string
+              required:
+                - fileName
+                - file
+                - effectiveDate
+                - businessCreatedAt
+                - userId
+                - product
+                - pricingType
+      responses:
+        "200":
+          description: OK
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+  "/cash/{locId}/delinquency":
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - cash-loan-query-controller
+      summary: Gets delinquency amount and fee of customer for Single Customer View
+      operationId: getCashLoanDelinquencyAmountAndFee
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DelinquencyResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /cash/proposed-credit-limit:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+        - staff
+        - service
+      tags:
+        - cash-loan-query-controller
+      summary: Get proposed credit limit for a customer based on principal, tenor
+      operationId: getProposedCreditLimit
+      parameters:
+        - $ref: "#/components/parameters/tenor"
+        - $ref: "#/components/parameters/principal"
+        - name: customerId
+          in: header
+          description: Id of the customer on whose behalf we perform the request
+          required: true
+          schema:
+            type: string
+            pattern: "[0-9]{1,20}"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProposedCreditLimitResponse"
+  /cash/max-loan-amount-and-pricing:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+        - staff
+        - service
+      tags:
+        - cash-loan-query-controller
+      summary: Re-calculate the max loan amount and get pricing after successfully CLI
+      operationId: getMaxLoanAmountAndPricing
+      parameters:
+        - $ref: "#/components/parameters/tenor"
+        - name: customerId
+          in: header
+          description: Id of the customer on whose behalf we perform the request
+          required: true
+          schema:
+            type: string
+            pattern: "[0-9]{1,20}"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoanAmountVsPricingResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+  /cash/prospect/max-loan-amount-and-pricing:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+        - staff
+        - service
+      tags:
+        - cash-loan-query-controller
+      summary: Re-calculate the max loan amount and get pricing after successfully CLI
+        for a NTB customer
+      operationId: getMaxLoanAmountAndProspectPricing
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/tenor"
+        - $ref: "#/components/parameters/approvedCreditLimit"
+        - $ref: "#/components/parameters/amount"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoanAmountVsProspectPricingResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+  /cash/prospect/amount:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+        - staff
+        - service
+      tags:
+        - cash-loan-query-controller
+      summary: Get Loan Amount Range for Prospects.
+      operationId: getCashLocProspectAmount
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CashLocProspectAmountResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+  /cash/prospect/customer-pricing:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+      tags:
+        - cash-loc-pricing-controller
+      summary: Retrieves cash loan prospect pricing table with customer grade
+      operationId: getCashProspectCustomerPricing
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/tenor"
+        - $ref: "#/components/parameters/amount"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProspectPricingResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "503":
+          description: Service Unavailable
+  /cash/amount-pricing:
+    get:
+      deprecated: false
+      x-consumers:
+        - ce-recommendation-service
+      x-security:
+        - customer
+      tags:
+        - cash-loc-query-controller
+      summary: Retrieves cash loan amount and its pricing
+      operationId: getCashLocAmountAndPricing
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CashLocAmountAndPricingResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - errorCode
+                properties:
+                  errorCode:
+                    type: string
+                    description: refer to error code list per API
+                  debugMessage:
+                    type: string
+                  validationErrors:
+                    additionalProperties:
+                      type: object
+  /sp/pricing:
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - split-purchase-pricing-controller
+      summary: Retrieves loan pricing table
+      operationId: getPricing
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/transactionId"
+        - $ref: "#/components/parameters/transactionIds"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PricingResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "503":
+          description: Service Unavailable
+  /sp/tenor:
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - split-purchase-query-controller
+      summary: Retrieves tenor range
+      operationId: getTenorRange
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TenorRangeResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+        "503":
+          description: Service Unavailable
+  /sp:
+    post:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - split-purchase-command-controller
+      summary: Set up loan for transaction.
+      operationId: setUpSpLoan
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/requestId"
+      requestBody:
+        $ref: "#/components/requestBodies/SetUpSplitPurchaseLoanRequest"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SetUpSplitPurchaseLoanResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - split-purchase-query-controller
+      summary: Query loan by tmId.
+      operationId: queryLoanByTmId
+      parameters:
+        - $ref: "#/components/parameters/tmId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SplitPurchaseDetailsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  "/sp/{locId}":
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - split-purchase-query-controller
+      summary: Get split purchase loan details
+      operationId: getSplitPurchaseDetails
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SplitPurchaseDetailsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  "/sp/loc/{locId}":
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - split-purchase-query-controller
+      summary: Gets a Split Purchase Loc
+      operationId: getSplitPurchaseLoc
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - name: locId
+          in: path
+          description: Loan on Card id
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SplitPurchaseLocResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  "/sp/{locId}/early-repayment":
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - split-purchase-query-controller
+      summary: Gets Early Repayment Amount of a Split Purchase Loc
+      operationId: getEarlyRepaymentAmountOfSplitPurchaseLoan
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EarlyRepaymentAmountResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - split-purchase-command-controller
+      summary: Repay split purchase loan early
+      operationId: repaySplitPurchaseLoanEarly
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+        - $ref: "#/components/parameters/requestId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EarlyRepaymentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  "/sp/{locId}/delinquency":
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - split-purchase-query-controller
+      summary: Gets delinquency amount and fee of customer for Single Customer View
+      operationId: getDelinquencyAmountAndFee
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DelinquencyResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /mi:
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - merchant-instalment-query-controller
+      summary: Query merchant instalment by tmId.
+      operationId: queryMerchantInstalmentByTmId
+      parameters:
+        - $ref: "#/components/parameters/tmId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MerchantInstalmentDetailsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+  "/mi/{locId}":
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - merchant-instalment-query-controller
+      summary: Get merchant instalment details
+      operationId: getMerchantInstalmentDetails
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MerchantInstalmentDetailsResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /loc:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+        - single-customer-view-service
+        - drp-account-service
+      x-security:
+        - customer
+        - staff
+        - service
+      tags:
+        - loc-account-query-controller
+      summary: Gets a list of customer LoCs
+      operationId: listCustomerLoCs
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/splitPurchaseLoanAfterId"
+        - $ref: "#/components/parameters/cashLoanAfterId"
+        - $ref: "#/components/parameters/pageSize"
+        - $ref: "#/components/parameters/optionalLoanTypeList"
+        - $ref: "#/components/parameters/optionalLoanStatusList"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoCListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /loc/can-apply:
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - loc-account-query-controller
+      summary: Check when customer will be able to apply for a loan
+      operationId: canCustomerApplyForLoan
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoanEligibilityResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  "/loc/{tmId}":
+    get:
+      deprecated: false
+      x-consumers:
+        - loan-account-transaction-service
+      x-security:
+        - service
+      tags:
+        - loc-account-query-controller
+      summary: Get customer loan by TM id
+      operationId: getCustomerLoanByTmId
+      parameters:
+        - $ref: "#/components/parameters/tmUuidPath"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoCItemResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /loc/count:
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - loc-account-query-controller
+      summary: Gets a count of customer loans
+      operationId: countCustomerLoans
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoanCountResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /loc/aggregate:
+    get:
+      deprecated: false
+      x-consumers:
+        - lending-accounts-service
+      x-security:
+        - service
+        - customer
+      tags:
+        - loc-account-query-controller
+      summary: Aggregates all customer's ACTIVE and PENDING_XXX loans
+      operationId: aggregateCustomersActiveAndPendingLoans
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerLoanSummaryResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /unavailable-names:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+      tags:
+        - loc-account-query-controller
+      summary: Gets unavailable names of loans
+      operationId: getUnavailableLoanNames
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/loanType"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UnavailableLoanNamesResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /loc/installment-breakdown:
+    get:
+      deprecated: false
+      x-consumers:
+        - graphql-server
+      x-security:
+        - customer
+      tags:
+        - simulate-loan-controller
+      summary: Return loan breakdown based on internal simulation
+      operationId: getSimulatedInstallmentBreakdown
+      parameters:
+        - $ref: "#/components/parameters/tenor"
+        - $ref: "#/components/parameters/interestRate"
+        - $ref: "#/components/parameters/principal"
+        - $ref: "#/components/parameters/loanApplicationDateOptional"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SimulatedInstallment"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /loc/whitelist:
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - whitelist-controller
+      summary: Check if user is whitelisted to see LoC
+      operationId: isWhitelisted
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WhitelistResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /transactions:
+    get:
+      deprecated: false
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - transaction-query-controller
+      summary: List eligible transactions and next statement cutoff date
+      operationId: listEligibleTransactions
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/afterId"
+        - $ref: "#/components/parameters/pageSize"
+        - $ref: "#/components/parameters/eligibility"
+        - $ref: "#/components/parameters/queryActivityStatus"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TransactionListResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /loc/writeoff:
+    delete:
+      deprecated: false
+      x-consumers:
+        - lending-accounts-service
+      x-security:
+        - service
+      tags:
+        - loc-account-command-controller
+      summary: Write Off the loans manually
+      operationId: deleteWithWriteOff
+      parameters:
+        - $ref: "#/components/parameters/requestId"
+        - $ref: "#/components/parameters/customerIdQuery"
+      responses:
+        "202":
+          description: Accepted
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  "/mi/{locId}/early-repayment":
+    get:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - merchant-instalment-query-controller
+      summary: Gets Early Repayment Amount of a Merchant Instalment
+      operationId: getEarlyRepaymentAmountOfMerchantInstalment
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EarlyRepaymentAmountResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    post:
+      deprecated: true
+      x-consumers:
+        - none
+      x-security: []
+      tags:
+        - merchant-instalment-command-controller
+      summary: Repay merchant instalment early
+      operationId: repayMerchantInstalmentEarly
+      parameters:
+        - $ref: "#/components/parameters/customerIdHeader"
+        - $ref: "#/components/parameters/locId"
+        - $ref: "#/components/parameters/requestId"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EarlyRepaymentResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+  /pricing/upload/modifier:
+    post:
+      deprecated: false
+      x-consumers:
+        - drgn-airflow
+      x-security:
+        - service
+      tags:
+        - pricing-modifier-command-controller
+      summary: Upload a pricing modifier file to loan-account-service
+      operationId: pricingUploadModifierPost
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  pattern: ^[a-zA-Z0-9.]+$
+                file:
+                  type: string
+                effectiveDate:
+                  example: 2023-07-11T16:00:00.000Z
+                  type: string
+                businessCreatedAt:
+                  example: 2019-07-11T16:00:00.000Z
+                  type: string
+                userId:
+                  example: somebody
+                  type: string
+                  pattern: ^[a-zA-Z0-9.]+$
+                pricingType:
+                  example: standard
+                  type: string
+                  pattern: ^[a-zA-Z0-9.]+$
+                product:
+                  example: CASH
+                  type: string
+                  enum:
+                    - CASH
+                    - BT
+                    - SP
+              required:
+                - fileName
+                - file
+                - effectiveDate
+                - businessCreatedAt
+                - userId
+                - pricingType
+      responses:
+        "200":
+          description: OK
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+  /pricing/upload/prices:
+    post:
+      deprecated: false
+      x-consumers:
+        - drgn-airflow
+      x-security:
+        - service
+      tags:
+        - pricing-command-controller
+      summary: Upload a pricing file to loan-account-service
+      operationId: pricingUploadPricesPost
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                file:
+                  type: string
+                effectiveDate:
+                  example: 2023-07-11T16:00:00.000Z
+                  type: string
+                businessCreatedAt:
+                  example: 2019-07-11T16:00:00.000Z
+                  type: string
+                userId:
+                  example: somebody
+                  type: string
+                product:
+                  type: string
+                pricingType:
+                  type: string
+                pricingCode:
+                  type: string
+              required:
+                - fileName
+                - file
+                - effectiveDate
+                - businessCreatedAt
+                - userId
+                - product
+                - pricingType
+      responses:
+        "200":
+          description: OK
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+  /cashback/upload/prices:
+    post:
+      deprecated: false
+      x-consumers:
+        - drgn-airflow
+      x-security:
+        - service
+      tags:
+        - cashback-pricing-command-controller
+      summary: Upload a cashback file to loan-account-service
+      operationId: cashbackUploadPricesPost
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  pattern: ^[0-9A-Za-z].+$
+                file:
+                  type: string
+                effectiveDateFrom:
+                  example: 2024-08-01T00:00:00.000Z
+                  type: string
+                effectiveDateTo:
+                  example: 2024-08-31T00:00:00.000Z
+                  type: string
+                userId:
+                  example: somebody
+                  type: string
+                  pattern: ^[0-9A-Za-z].+$
+                product:
+                  type: string
+                  pattern: ^[0-9A-Za-z].+$
+                pricingType:
+                  type: string
+                  pattern: ^[0-9A-Za-z].+$
+                pricingCode:
+                  type: string
+                  pattern: ^[0-9A-Za-z].+$
+              required:
+                - fileName
+                - file
+                - userId
+                - product
+                - pricingType
+      responses:
+        "200":
+          description: OK
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+  /cashback/prices:
+    delete:
+      deprecated: false
+      x-consumers:
+        - drgn-airflow
+      x-security:
+        - service
+      tags:
+        - cashback-pricing-command-controller
+      summary: Remove old loan cashback pricing file
+      operationId: deleteOldCashbackPricingFile
+      parameters:
+        - $ref: "#/components/parameters/queryProduct"
+        - $ref: "#/components/parameters/queryPricingType"
+      responses:
+        "202":
+          description: Accepted
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+  /cashback/upload/prices/modifier:
+    post:
+      deprecated: false
+      x-consumers:
+        - drgn-airflow
+      x-security:
+        - service
+      tags:
+        - cashback-pricing-command-controller
+      summary: Upload Cashback pricing modifier file
+      operationId: uploadCashbackPricingModifier
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  pattern: ^[0-9A-Za-z].+$
+                file:
+                  type: string
+                effectiveDateFrom:
+                  example: 2024-08-01T00:00:00.000Z
+                  type: string
+                effectiveDateTo:
+                  example: 2024-08-31T00:00:00.000Z
+                  type: string
+                userId:
+                  example: somebody
+                  type: string
+                  pattern: ^[0-9A-Za-z].+$
+                product:
+                  type: string
+                  pattern: ^[0-9A-Za-z].+$
+                pricingType:
+                  type: string
+                  pattern: ^[0-9A-Za-z].+$
+              required:
+                - fileName
+                - file
+                - userId
+                - product
+                - pricingType
+      responses:
+        "200":
+          description: OK
+        "201":
+          description: Created
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+  /cashback/prices/modifier:
+    delete:
+      deprecated: false
+      x-consumers:
+        - drgn-airflow
+      x-security:
+        - service
+      tags:
+        - cashback-pricing-command-controller
+      summary: Remove old loan cashback pricing modifier file
+      operationId: deleteOldCashbackPricingModifierFile
+      parameters:
+        - $ref: "#/components/parameters/queryProduct"
+        - $ref: "#/components/parameters/queryPricingType"
+      responses:
+        "202":
+          description: Accepted
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not Found
+components:
+  requestBodies:
+    SetUpSplitPurchaseLoanRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SetUpSplitPurchaseLoanRequest"
+      description: Includes parameters necesarry to set up a loan
+      required: true
+    CashLoanEligibilityRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CashLoanEligibilityRequest"
+      required: true
+    CashLoanCliEligibilityRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CashLoanCliEligibilityRequest"
+      required: true
+    EditLoanNameRequest:
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/EditLoanNameRequest"
+      required: true
+  schemas:
+    SetUpSplitPurchaseLoanRequest:
+      title: SetUpSplitPurchaseLoanRequest
+      type: object
+      required:
+        - loanName
+        - tenor
+        - termsAndConditionsConsent
+        - keyFactStatementConsent
+      properties:
+        transactionId:
+          description: Global id of the transaction
+          type: string
+        transactionIds:
+          type: array
+          items:
+            type: string
+            uniqueItems: true
+            minItems: 1
+        loanName:
+          description: Name of the loan which user want to be displayed
+          type: string
+          maxLength: 20
+        tenor:
+          description: Tenor of the loan chosen by user
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+        termsAndConditionsConsent:
+          description: Flag indicates if user agreed on terms and conditions
+          type: boolean
+        keyFactStatementConsent:
+          description: Flag indicates if user read key facts and statements consent
+          type: boolean
+    SplitPurchaseLoanApplicationResponse:
+      title: SplitPurchaseLoanApplicationResponse
+      type: object
+      required:
+        - approval
+      properties:
+        approval:
+          description: Flag indicates if loan was set-up
+          type: boolean
+      deprecated: true
+    SetUpSplitPurchaseLoanResponse:
+      title: SetUpSplitPurchaseLoanResponse
+      type: object
+      required:
+        - locId
+        - customerId
+        - name
+        - status
+        - creationDate
+      properties:
+        locId:
+          description: Loan on card id
+          type: string
+        customerId:
+          description: Id of the customer
+          type: string
+        name:
+          description: Alias of the loan
+          type: string
+          minLength: 1
+          maxLength: 20
+        status:
+          $ref: "#/components/schemas/LoanStatus"
+        creationDate:
+          description: Date of split purchase loan creation.
+          type: string
+    LoanStatus:
+      description: Status of loan
+      type: string
+      enum:
+        - SUBMITTED
+        - PENDING_TRANSACTION_SETTLED
+        - PENDING_RING_FENCE
+        - APPROVED
+        - PENDING_ACTIVE
+        - ACTIVE
+        - REJECTED
+        - PENDING_CLOSURE
+        - CLOSED
+    LoanSizeResponse:
+      title: LoanSizeResponse
+      type: object
+      required:
+        - size
+        - currency
+      properties:
+        size:
+          type: number
+          minimum: 0
+          exclusiveMinimum: true
+        currency:
+          type: string
+          pattern: ^SDG$
+    PricingResponse:
+      title: PricingResponse
+      type: object
+      required:
+        - tenor
+        - monthlyRepaymentAmount
+        - totalRepaymentAmount
+        - apr
+        - aprWithoutFees
+        - interestRate
+        - initialFee
+        - monthlyFee
+      properties:
+        tenor:
+          type: integer
+        monthlyRepaymentAmount:
+          type: number
+        totalRepaymentAmount:
+          type: number
+        apr:
+          type: number
+        aprWithoutFees:
+          type: number
+        interestRate:
+          type: number
+        initialFee:
+          type: number
+        monthlyFee:
+          type: number
+        promotionCode:
+          type: string
+        originalInterestRate:
+          type: number
+    ProspectPricingResponse:
+      title: ProspectPricingResponse
+      type: object
+      required:
+        - apr
+        - aprWithoutFees
+        - initialFee
+        - interestRate
+        - monthlyFee
+        - monthlyRepaymentAmount
+        - tenor
+        - totalRepaymentAmount
+        - proposedCreditLimit
+      properties:
+        tenor:
+          type: integer
+        monthlyRepaymentAmount:
+          type: number
+        totalRepaymentAmount:
+          type: number
+        apr:
+          type: number
+        aprWithoutFees:
+          type: number
+        interestRate:
+          type: number
+        initialFee:
+          type: number
+        monthlyFee:
+          type: number
+        promotionCode:
+          type: string
+        originalInterestRate:
+          type: number
+        proposedCreditLimit:
+          type: number
+    TenorRangeResponse:
+      title: TenorRangeResponse
+      type: object
+      description: Tenor range
+      required:
+        - min
+        - max
+        - default
+      properties:
+        min:
+          type: integer
+        max:
+          type: integer
+        default:
+          type: integer
+    ProspectTenorRangeResponse:
+      title: ProspectTenorRangeResponse
+      type: object
+      description: Prospect Tenor range
+      required:
+        - min
+        - max
+        - default
+      properties:
+        min:
+          type: integer
+        max:
+          type: integer
+        default:
+          type: integer
+    CashLocAmountResponse:
+      title: CashLocAmountResponse
+      type: object
+      description: Amount
+      required:
+        - min
+        - max
+        - revisedMax
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+        revisedMax:
+          type: number
+    CashLocAmountAndPricingResponse:
+      title: CashLocAmountAndPricingResponse
+      type: object
+      description: Cash Loc Amount and its pricing
+      required:
+        - amount
+        - pricing
+      properties:
+        amount:
+          $ref: "#/components/schemas/CashLocAmountResponse"
+        pricing:
+          $ref: "#/components/schemas/PricingResponse"
+    CashLocProspectAmountResponse:
+      title: CashLocProspectAmountResponse
+      type: object
+      description: Amount
+      required:
+        - min
+        - max
+      properties:
+        min:
+          type: number
+        max:
+          type: number
+    PricingTableResponse:
+      title: PricingResponse
+      type: object
+      required:
+        - statusCode
+        - message
+      properties:
+        statusCode:
+          type: string
+        message:
+          type: string
+    LoCListResponse:
+      title: LoCListResponse
+      type: object
+      required:
+        - totalCount
+        - items
+      properties:
+        totalCount:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/LoCItemResponse"
+    LoCItemResponse:
+      title: LoCItemResponse
+      type: object
+      required:
+        - id
+        - customerId
+        - creditAccountId
+        - name
+        - tenor
+        - installmentsCharged
+        - monthlyRepaymentAmount
+        - outstandingBalance
+        - currency
+        - type
+        - status
+      properties:
+        id:
+          type: string
+        customerId:
+          type: string
+        mainAccountId:
+          type: string
+        creditAccountId:
+          type: string
+        name:
+          type: string
+        transactionId:
+          type: string
+        transactions:
+          description: list of transactions related to the loc
+          type: array
+          items:
+            $ref: "#/components/schemas/TransactionItemV2"
+        merchantName:
+          type: string
+        originalMerchantName:
+          type: string
+        merchantLogo:
+          type: string
+        transactionCategory:
+          type: string
+        tenor:
+          type: integer
+        installmentsCharged:
+          type: integer
+        monthlyRepaymentAmount:
+          type: number
+        outstandingBalance:
+          type: number
+        earlyRepaymentAccruedInterest:
+          type: number
+        currency:
+          type: string
+        type:
+          type: string
+          enum:
+            - SPLIT_PURCHASE
+            - CASH
+            - BALANCE_TRANSFER
+            - MERCHANT_INSTALMENT
+        status:
+          $ref: "#/components/schemas/LoanStatus"
+        rejectionReason:
+          $ref: "#/components/schemas/RejectionReason"
+        totalPrincipal:
+          description: Total principal of the transaction
+          type: number
+        lastPaymentDate:
+          type: string
+        nextInstallmentDate:
+          type: string
+        nextMonthlyRepaymentAmount:
+          type: number
+    LoanCountResponse:
+      title: LoanCountResponse
+      type: object
+      required:
+        - count
+      properties:
+        count:
+          type: integer
+    CustomerLoanSummaryResponse:
+      title: CustomerLoanSummaryResponse
+      type: object
+      required:
+        - customerId
+        - totalLoanAmount
+        - totalInstallmentAmount
+        - totalOutstandingBalance
+        - currency
+      properties:
+        customerId:
+          type: string
+        totalLoanAmount:
+          type: number
+        totalInstallmentAmount:
+          type: number
+        totalOutstandingBalance:
+          type: number
+        currency:
+          type: string
+    SplitPurchaseDetailsResponse:
+      title: SplitPurchaseDetailsResponse
+      type: object
+      required:
+        - id
+        - name
+        - customerId
+        - creditAccountId
+        - transactionId
+        - totalPrincipal
+        - tenor
+        - monthlyInterestRate
+        - apr
+        - initialFee
+        - installmentsCharged
+        - monthlyRepaymentAmount
+        - totalRepaymentAmount
+        - outstandingBalance
+        - currency
+        - installmentBreakdown
+        - isEligibleForEarlyRepayment
+        - status
+        - creationDate
+        - lastModifiedDate
+      properties:
+        id:
+          description: Id of loan on card
+          type: string
+        name:
+          description: Name of loan
+          type: string
+          maxLength: 20
+          exclusiveMaximum: false
+        customerId:
+          description: Id of customer
+          type: string
+        creditAccountId:
+          description: Credit account id of customer
+          type: string
+        transactionId:
+          description: Id of the transaction
+          type: string
+        transactions:
+          description: list of transactions related to the loc
+          type: array
+          items:
+            $ref: "#/components/schemas/TransactionItemV2"
+        merchantName:
+          type: string
+          description: Name of merchant
+        originalMerchantName:
+          type: string
+          description: Original merchant name
+        merchantLogo:
+          type: string
+          description: Logo of merchant
+        transactionCategory:
+          type: string
+          description: Category of transaction
+        totalPrincipal:
+          description: Total principal of the transaction
+          type: number
+        tenor:
+          type: integer
+        monthlyInterestRate:
+          type: number
+        apr:
+          description: Annual percentage rate of loan
+          type: number
+        initialFee:
+          type: number
+        installmentsCharged:
+          type: integer
+          minimum: 0
+          exclusiveMinimum: false
+        monthlyRepaymentAmount:
+          type: number
+        totalRepaymentAmount:
+          type: number
+        outstandingBalance:
+          type: number
+        currency:
+          type: string
+        lastPaymentDate:
+          type: string
+        installmentBreakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/Installment"
+        isEligibleForEarlyRepayment:
+          type: boolean
+        status:
+          $ref: "#/components/schemas/LoanStatus"
+        amountCharged:
+          type: number
+        outstandingPrincipal:
+          type: number
+        startDate:
+          type: string
+        creationDate:
+          type: string
+        lastModifiedDate:
+          type: string
+        accruedInterest:
+          type: number
+        earlyRepaymentFee:
+          type: number
+        earlyRepaymentAccruedInterest:
+          type: number
+        rejectionReason:
+          $ref: "#/components/schemas/RejectionReason"
+    SplitPurchaseLocResponse:
+      title: LoCDetailsResponse
+      type: object
+      required:
+        - id
+        - name
+        - outstandingBalance
+        - totalAmount
+        - tenor
+        - apr
+        - monthlyInterestRate
+        - installments
+        - isEligibleForEarlyRepayment
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        outstandingBalance:
+          type: number
+        totalAmount:
+          type: number
+        tenor:
+          type: integer
+        apr:
+          type: number
+        monthlyInterestRate:
+          type: number
+        installments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Installment"
+        isEligibleForEarlyRepayment:
+          type: boolean
+      deprecated: true
+    EarlyRepaymentAmountResponse:
+      title: EarlyRepaymentAmountResponse
+      type: object
+      required:
+        - locId
+        - customerId
+        - outstandingPrincipal
+        - earlyRepaymentFee
+        - accruedInterest
+        - totalAmount
+      properties:
+        locId:
+          description: Loan on Card Id
+          type: string
+        customerId:
+          description: Customer Id in Mox
+          type: string
+        outstandingPrincipal:
+          description: Remaining principal to be paid
+          type: number
+        earlyRepaymentFee:
+          description: Fee for early repayment
+          type: number
+        accruedInterest:
+          description: Accrued interest to be paid
+          type: number
+        totalAmount:
+          description: Total amount to be paid for early repayment
+          type: number
+    EarlyRepaymentResponse:
+      title: EarlyRepaymentAmountResponse
+      type: object
+      required:
+        - loanId
+        - customerId
+        - status
+        - closureReason
+      properties:
+        loanId:
+          description: Loan on Card Id
+          type: string
+        customerId:
+          description: Customer Id in Mox
+          type: string
+        status:
+          $ref: "#/components/schemas/LoanStatus"
+        closureReason:
+          $ref: "#/components/schemas/ClosureReason"
+    ClosureReason:
+      title: ClosureReason
+      type: string
+      enum:
+        - PAID
+        - EARLY_REPAYMENT
+        - DELINQUENCY
+    Installment:
+      title: Installment
+      type: object
+      required:
+        - currency
+        - principal
+        - interest
+        - total
+        - paymentDate
+      properties:
+        currency:
+          type: string
+        principal:
+          type: number
+        interest:
+          type: number
+        total:
+          type: number
+        paymentDate:
+          type: string
+    DelinquencyResponse:
+      title: DelinquencyResponse
+      type: object
+      required:
+        - totalDelinquencyAmount
+        - delinquencyFee
+      properties:
+        totalDelinquencyAmount:
+          type: number
+        delinquencyFee:
+          type: number
+    TransactionListResponse:
+      title: transactionResponse
+      type: object
+      required:
+        - totalCount
+        - customerId
+        - transactions
+      properties:
+        totalCount:
+          type: number
+        customerId:
+          type: string
+        nextStatementCutOffDate:
+          type: string
+        transactions:
+          type: array
+          items:
+            $ref: "#/components/schemas/TransactionItemV2"
+    TransactionItem:
+      title: transactionItem
+      type: object
+      required:
+        - id
+        - transactionId
+        - date
+        - amount
+        - currency
+        - eligible
+      properties:
+        id:
+          type: string
+        transactionId:
+          type: string
+        date:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        eligible:
+          $ref: "#/components/schemas/Eligibility"
+        status:
+          $ref: "#/components/schemas/EventStatus"
+        merchantName:
+          type: string
+        originalMerchantName:
+          type: string
+        merchantLogo:
+          type: string
+        transactionCategory:
+          type: string
+    TransactionItemV2:
+      title: transactionItemV2
+      type: object
+      required:
+        - id
+        - transactionId
+        - date
+        - amount
+        - currency
+        - eligible
+      properties:
+        id:
+          type: string
+        transactionId:
+          type: string
+        date:
+          type: string
+        amount:
+          type: number
+        currency:
+          type: string
+        eligible:
+          $ref: "#/components/schemas/EligibilityV2"
+        status:
+          $ref: "#/components/schemas/EventStatus"
+        merchantName:
+          type: string
+        originalMerchantName:
+          type: string
+        merchantLogo:
+          type: string
+        transactionCategory:
+          type: string
+    Eligibility:
+      type: string
+      enum:
+        - ELIGIBLE
+        - PENDING_FOR_SPLIT_PURCHASE
+        - USED_FOR_SPLIT_PURCHASE
+    EligibilityV2:
+      type: string
+      enum:
+        - ELIGIBLE
+        - INELIGIBLE
+        - PENDING_FOR_LOAN
+        - USED_FOR_LOAN
+        - UNKNOWN
+    ActivityStatus:
+      type: string
+      enum:
+        - COMPLETED
+        - PENDING
+        - UNKNOWN
+    EventStatus:
+      type: string
+      enum:
+        - PENDING
+        - COMPLETED
+        - CANCELLED
+        - REJECTED
+    SimulatedInstallment:
+      title: SimulatedInstallment
+      type: object
+      required:
+        - currency
+        - principal
+        - interest
+        - total
+        - paymentDate
+      properties:
+        currency:
+          type: string
+        principal:
+          type: number
+        interest:
+          type: number
+        total:
+          type: number
+        paymentDate:
+          type: string
+    EditLoanNameRequest:
+      type: object
+      required:
+        - loanName
+      properties:
+        loanName:
+          description: New name of the loan
+          type: string
+          maxLength: 20
+          pattern: ^[A-Za-z0-9\s]*$
+    CashLoanEligibilityRequest:
+      type: object
+      required:
+        - loanName
+        - tenor
+        - principal
+      properties:
+        loanName:
+          description: Name of the loan
+          type: string
+          maxLength: 20
+        tenor:
+          description: Tenor of the loan chosen by customer
+          type: integer
+          minimum: 1
+        principal:
+          description: Amount of money customer wants to borrows
+          type: number
+        cliFlag:
+          description: The flag to skip eligibility check for CLI
+          type: boolean
+    CashLoanCliEligibilityRequest:
+      type: object
+      required:
+        - loanName
+        - principal
+        - tenor
+      properties:
+        loanName:
+          description: Name of the loan
+          type: string
+          maxLength: 20
+        tenor:
+          description: Tenor of the loan chosen by customer
+          type: integer
+          minimum: 1
+        principal:
+          description: Amount of money customer wants to borrows
+          type: number
+    CashLoanStatus:
+      description: Status of the cash loan
+      type: string
+      enum:
+        - SUBMITTED
+        - PENDING_RING_FENCE
+        - APPROVED
+        - PENDING_ACTIVE
+        - ACTIVE
+        - REJECTED
+        - PENDING_CLOSURE
+        - CLOSED
+    CashLoanDetailsResponse:
+      title: CashLoanDetailsResponse
+      type: object
+      required:
+        - id
+        - name
+        - customerId
+        - mainAccountId
+        - creditAccountId
+        - totalPrincipal
+        - tenor
+        - monthlyInterestRate
+        - apr
+        - aprWithoutFees
+        - initialFee
+        - installmentsCharged
+        - monthlyRepaymentAmount
+        - totalRepaymentAmount
+        - outstandingBalance
+        - currency
+        - installmentBreakdown
+        - isEligibleForEarlyRepayment
+        - status
+        - creationDate
+      properties:
+        id:
+          description: Id of loan on card
+          type: string
+        name:
+          description: Name of loan
+          type: string
+          maxLength: 20
+          exclusiveMaximum: false
+        customerId:
+          description: Id of customer
+          type: string
+        mainAccountId:
+          description: Main Account Id of customer
+          type: string
+        creditAccountId:
+          description: Credit Account Id of customer
+          type: string
+        totalPrincipal:
+          description: Total principal of the transaction
+          type: number
+        tenor:
+          type: integer
+        monthlyInterestRate:
+          type: number
+        apr:
+          description: Annual percentage rate of loan
+          type: number
+        aprWithoutFees:
+          type: number
+        initialFee:
+          type: number
+        installmentsCharged:
+          type: integer
+          minimum: 0
+          exclusiveMinimum: false
+        monthlyRepaymentAmount:
+          type: number
+        totalRepaymentAmount:
+          type: number
+        outstandingBalance:
+          type: number
+        currency:
+          type: string
+        lastPaymentDate:
+          type: string
+        installmentBreakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/Installment"
+        isEligibleForEarlyRepayment:
+          type: boolean
+        status:
+          $ref: "#/components/schemas/CashLoanStatus"
+        amountCharged:
+          type: number
+        outstandingPrincipal:
+          type: number
+        startDate:
+          type: string
+        creationDate:
+          type: string
+        accruedInterest:
+          type: number
+        earlyRepaymentFee:
+          type: number
+        earlyRepaymentAccruedInterest:
+          type: number
+        rejectionReason:
+          $ref: "#/components/schemas/RejectionReason"
+    CashLoanCliResponse:
+      title: CashLoanCliResponse
+      type: object
+      properties:
+        stpIndicator:
+          type: boolean
+          description: return indicator of STP Loan Application
+    WhitelistResponse:
+      title: WhitelistResponse
+      type: object
+      required:
+        - cash
+        - splitPurchase
+      properties:
+        cash:
+          type: boolean
+          description: whitelist flag for feature cash loan
+        splitPurchase:
+          type: boolean
+          description: whitelist flag for feature split purchase loan
+    UnavailableLoanNamesResponse:
+      title: UnavailableLoanNamesResponse
+      type: object
+      required:
+        - names
+      properties:
+        names:
+          type: array
+          items:
+            type: string
+    EligibleBillType:
+      title: Bill Type
+      description: Bill Type
+      type: object
+      required:
+        - accountDescription
+        - limitMinAmount
+        - limitMaxAmount
+        - limitAmountCurrency
+      properties:
+        accountDescription:
+          $ref: "#/components/schemas/I18NString"
+        typeCode:
+          description: type code
+          type: string
+        typeDescription:
+          $ref: "#/components/schemas/I18NString"
+        limitMinAmount:
+          description: amount minimum
+          type: number
+          minimum: 0
+        limitMaxAmount:
+          description: amount maximum
+          type: number
+          minimum: 0
+        limitAmountCurrency:
+          description: currency of the min and max amounts
+          type: string
+    I18NString:
+      title: Internaltionalized String
+      description: Internaltionalized String
+      type: object
+      required:
+        - en
+        - zhHant
+      properties:
+        en:
+          description: English
+          type: string
+        zhHant:
+          description: Traditional Chinese
+          type: string
+    LoanEligibilityResponse:
+      type: object
+      required:
+        - maxLimitReachedTotal
+        - maxLimitReachedToday
+        - maxLimitReachedTomorrow
+        - splitPurchaseLoanEligibility
+        - cashLoanEligibility
+        - balanceTransferEligibility
+      properties:
+        maxLimitReachedTotal:
+          type: boolean
+        maxLimitReachedToday:
+          type: boolean
+        maxLimitReachedTomorrow:
+          type: boolean
+        splitPurchaseLoanEligibility:
+          $ref: "#/components/schemas/LoanTypeEligibility"
+        cashLoanEligibility:
+          $ref: "#/components/schemas/LoanTypeEligibility"
+        balanceTransferEligibility:
+          $ref: "#/components/schemas/LoanTypeEligibility"
+    LoanTypeEligibility:
+      type: object
+      required:
+        - canApply
+      properties:
+        canApply:
+          type: boolean
+        rejectionCode:
+          type: string
+    RejectionReason:
+      title: RejectionReason
+      description: The reason why loan was rejected if status is REJECTED, otherwise null
+      type: object
+      required:
+        - ringFencing
+        - fico
+        - ringFencingUnknown
+        - differentSettledAmount
+        - transactionDidNotSettled
+        - delinquency
+        - tmError
+        - scod
+        - insufficientLimit
+        - stuckLoan
+        - creditAccountNotOpen
+        - billPaymentFailed
+        - billPaymentInvalidBillAccount
+        - billPaymentInvalidAmount
+        - billPaymentValidationFailed
+        - noTimeSlotAvailable
+      properties:
+        ringFencing:
+          type: boolean
+        fico:
+          type: boolean
+        ringFencingUnknown:
+          type: boolean
+        differentSettledAmount:
+          type: boolean
+        transactionDidNotSettled:
+          type: boolean
+        delinquency:
+          type: boolean
+        tmError:
+          type: boolean
+        scod:
+          type: boolean
+        insufficientLimit:
+          type: boolean
+        stuckLoan:
+          type: boolean
+        creditAccountNotOpen:
+          type: boolean
+        billPaymentFailed:
+          type: boolean
+        billPaymentInvalidBillAccount:
+          type: boolean
+        billPaymentInvalidAmount:
+          type: boolean
+        billPaymentValidationFailed:
+          type: boolean
+        noTimeSlotAvailable:
+          type: boolean
+    MerchantInstalmentDetailsResponse:
+      title: MerchantInstalmentDetailsResponse
+      type: object
+      required:
+        - id
+        - name
+        - customerId
+        - creditAccountId
+        - transactions
+        - totalPrincipal
+        - monthlyInterestRate
+        - apr
+        - initialFee
+        - tenor
+        - installmentsCharged
+        - monthlyRepaymentAmount
+        - totalRepaymentAmount
+        - outstandingBalance
+        - currency
+        - installmentBreakdown
+        - isEligibleForEarlyRepayment
+        - status
+        - creationDate
+      properties:
+        id:
+          description: Id of loan on card
+          type: string
+        name:
+          description: Name of loan
+          type: string
+          maxLength: 20
+          exclusiveMaximum: false
+        customerId:
+          description: Id of customer
+          type: string
+        creditAccountId:
+          description: Credit account id of customer
+          type: string
+        transactions:
+          description: list of transactions related to the loc
+          type: array
+          items:
+            $ref: "#/components/schemas/TransactionItemV2"
+        totalPrincipal:
+          description: Total principal of the transaction
+          type: number
+        monthlyInterestRate:
+          type: number
+        apr:
+          description: Annual percentage rate of loan
+          type: number
+        initialFee:
+          type: number
+        merchantFeeAmount:
+          type: number
+        merchantFeeRate:
+          type: number
+        merchantFeeApr:
+          type: number
+        tenor:
+          type: integer
+        installmentsCharged:
+          type: integer
+          minimum: 0
+          exclusiveMinimum: false
+        monthlyRepaymentAmount:
+          type: number
+        totalRepaymentAmount:
+          type: number
+        outstandingBalance:
+          type: number
+        currency:
+          type: string
+        lastPaymentDate:
+          type: string
+        installmentBreakdown:
+          type: array
+          items:
+            $ref: "#/components/schemas/Installment"
+        isEligibleForEarlyRepayment:
+          type: boolean
+        status:
+          $ref: "#/components/schemas/LoanStatus"
+        amountCharged:
+          type: number
+        outstandingPrincipal:
+          type: number
+        startDate:
+          type: string
+        creationDate:
+          type: string
+        earlyRepaymentFee:
+          type: number
+        earlyRepaymentAccruedInterest:
+          type: number
+        rejectionReason:
+          $ref: "#/components/schemas/RejectionReason"
+    ProposedCreditLimitResponse:
+      title: ProposedCreditLimitResponse
+      type: object
+      required:
+        - proposedCreditLimit
+      properties:
+        proposedCreditLimit:
+          type: number
+    LoanAmountVsPricingResponse:
+      title: LoanAmountVsPricingResponse
+      type: object
+      required:
+        - maxLoanAmount
+        - pricing
+      properties:
+        maxLoanAmount:
+          description: Max amount of money customer borrows
+          type: number
+        pricing:
+          description: Pricing agreed to by customer
+          $ref: "#/components/schemas/PricingResponse"
+    LoanAmountVsProspectPricingResponse:
+      title: LoanAmountVsProspectPricingResponse
+      type: object
+      required:
+        - maxLoanAmount
+        - pricing
+        - amount
+        - isMaxLoanAmountUsedForPricing
+      properties:
+        maxLoanAmount:
+          description: Max amount of money customer borrows
+          type: number
+        amount:
+          description: Selected amount by customer
+          type: number
+        isMaxLoanAmountUsedForPricing:
+          description: Flag indicates if user read key facts and statements consent
+          type: boolean
+        pricing:
+          description: Pricing agreed to by customer
+          $ref: "#/components/schemas/ProspectPricingResponse"
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    UnprocessableEntity:
+      description: Unprocessable entity
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+  parameters:
+    customerIdHeader:
+      name: customerId
+      in: header
+      description: Id of the customer on whose behalf we perform the request
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 20
+        pattern: ^[0-9a-zA-Z]+$
+    transactionId:
+      name: transactionId
+      in: query
+      description: Global transaction id
+      required: false
+      schema:
+        type: string
+    transactionIds:
+      name: transactionIds
+      in: query
+      description: Global transaction ids
+      required: false
+      schema:
+        type: array
+        items:
+          type: string
+          uniqueItems: true
+          minItems: 1
+    locId:
+      name: locId
+      in: path
+      description: UUID of loan on card account
+      required: true
+      schema:
+        type: string
+    eligibility:
+      name: eligibility
+      in: query
+      description: Query parameter of transaction eligibilities
+      required: true
+      schema:
+        $ref: "#/components/schemas/EligibilityV2"
+    queryActivityStatus:
+      name: activityStatus
+      in: query
+      description: Query parameter of transaction status
+      required: false
+      schema:
+        $ref: "#/components/schemas/ActivityStatus"
+    afterId:
+      name: afterId
+      in: query
+      description: LoC/Transaction id after which LoCs/Transactions will be queried
+      required: false
+      schema:
+        type: string
+    splitPurchaseLoanAfterId:
+      name: splitPurchaseLoanAfterId
+      in: query
+      description: SP LoC id after which SP LoCs will be queried
+      required: false
+      schema:
+        type: string
+    cashLoanAfterId:
+      name: cashLoanAfterId
+      in: query
+      description: Cash LoC id after which cash LoCs will be queried
+      required: false
+      schema:
+        type: string
+    pageSize:
+      name: pageSize
+      in: query
+      description: Size of the page to retrieve
+      required: true
+      schema:
+        type: integer
+    tmId:
+      name: tmId
+      in: query
+      description: Unique loan id in TM
+      required: true
+      schema:
+        type: string
+    tenor:
+      name: tenor
+      in: query
+      description: Length of loan
+      required: true
+      schema:
+        type: integer
+    apr:
+      name: apr
+      in: query
+      description: Annual percentage rate
+      required: true
+      schema:
+        type: number
+    interestRate:
+      name: interestRate
+      in: query
+      description: Interest rate monthly
+      required: true
+      schema:
+        type: number
+    principal:
+      name: principal
+      in: query
+      description: Purchase amount
+      required: true
+      schema:
+        type: number
+    oneTimeFee:
+      name: oneTimeFee
+      in: query
+      description: One time fee
+      required: true
+      schema:
+        type: number
+    customerIdQuery:
+      name: customerId
+      in: query
+      description: Unique customer id as query parameter
+      required: true
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 20
+    amount:
+      name: amount
+      in: query
+      description: Principal for the cash loan
+      required: true
+      schema:
+        type: number
+    requestId:
+      name: requestId
+      in: header
+      description: Default idempotency key
+      required: true
+      schema:
+        type: string
+    tmIdPath:
+      name: tmId
+      in: path
+      description: TM Account(loan or other) Id in path
+      required: true
+      schema:
+        type: string
+    tmUuidPath:
+      name: tmId
+      in: path
+      description: TM Account(loan or other) UUID in path
+      required: true
+      schema:
+        type: string
+    ipAddress:
+      name: ipAddress
+      in: header
+      description: IP address of customers device
+      required: true
+      schema:
+        type: string
+    webSessionId:
+      name: webSessionId
+      in: header
+      description: Customers web session ID
+      required: true
+      schema:
+        type: string
+    tmxSessionId:
+      name: tmxSessionId
+      in: header
+      description: Customers TMX session ID
+      required: true
+      schema:
+        type: string
+    loanApplicationDateOptional:
+      name: loanApplicationDate
+      in: query
+      description: Loan application date
+      required: false
+      example: 2019-12-09T16:00:00.000Z
+      schema:
+        type: string
+    loanType:
+      name: loanType
+      in: query
+      description: Loan type
+      required: true
+      schema:
+        type: string
+        enum:
+          - CASH
+          - SPLIT_PURCHASE
+          - BALANCE_TRANSFER
+          - MERCHANT_INSTALMENT
+    optionalLoanTypeList:
+      name: loanTypes
+      in: query
+      description: Optional list of loan types that should be retrieved. By default
+        only cash loan and split purchase is returned.
+      required: false
+      schema:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          type: string
+          enum:
+            - CASH
+            - SPLIT_PURCHASE
+            - BALANCE_TRANSFER
+            - MERCHANT_INSTALMENT
+    optionalLoanStatusList:
+      name: loanStatuses
+      in: query
+      description: Optional list of loan statuses that should be retrieved. Default is
+        SUBMITTED, PENDING_RING_FENCE, APPROVED, ACTIVE
+      required: false
+      schema:
+        type: array
+        minItems: 1
+        uniqueItems: true
+        items:
+          $ref: "#/components/schemas/LoanStatus"
+    approvedCreditLimit:
+      name: approvedCreditLimit
+      in: query
+      description: an approval credit limit amount sent by customer
+      required: true
+      schema:
+        type: number
+    queryProduct:
+      name: product
+      in: query
+      description: Loan Type
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Za-z].+$
+    queryPricingType:
+      name: pricingType
+      in: query
+      description: Pricing Type like standard, prospect, promotional
+      required: true
+      schema:
+        type: string
+        pattern: ^[A-Za-z].+$
+  securitySchemes:
+    accessTokenAuth:
+      type: http
+      scheme: bearer
+    idTokenAuth:
+      type: apiKey
+      in: header
+      name: idtoken
+    staffIdTokenAuth:
+      type: apiKey
+      in: header
+      name: staffidtoken
+security:
+  - accessTokenAuth: []
+    idTokenAuth: []
+    staffIdTokenAuth: []
+

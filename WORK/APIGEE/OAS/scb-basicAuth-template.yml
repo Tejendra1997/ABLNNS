@@ -1,0 +1,401 @@
+openapi: 3.0.3
+info:
+  description: PerxGateway Service API - Webhooks
+  version: 1.3.3
+  title: PerxGateway Service API - Webhooks
+  x-mox-force-incompatible-changes: true
+  contact:
+    name: Customer Engagement Team
+tags:
+  - name: webhooks
+    description: Endpoints to expose webhooks
+paths:
+  /webhook:
+    post:
+      summary: Generic webhook for all Perx events
+      operationId: onEvent
+      tags:
+        - webhooks
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: OK
+      description: Generic webhook endpoint which routes to different handlers based
+        on event.name
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebHookRequest"
+  /webhook/voucher-issued:
+    post:
+      summary: Webhook for Voucher issuance
+      operationId: webhookVoucherIssued
+      tags:
+        - webhooks
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: OK
+      description: When Perx is receiving a voucher issuance event, this webhook will
+        be called
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebHookRequest"
+  /webhook/voucher-redeemed:
+    post:
+      summary: Webhook for Voucher redemption
+      tags:
+        - webhooks
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: OK
+      operationId: webhookVoucherRedeemed
+      description: When Perx is receiving a voucher redemption event, this webhook
+        will be called
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebHookRequest"
+  /webhook/voucher-expired:
+    post:
+      summary: Webhook for Voucher expiry
+      tags:
+        - webhooks
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: OK
+      operationId: webhookVoucherExpired
+      description: When Perx is receiving a voucher expiry event, this webhook will be
+        called
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebHookRequest"
+  /webhook/achieve-stamp-slot:
+    post:
+      summary: Webhook for Stamp Slot Achievement
+      tags:
+        - webhooks
+      security:
+        - basicAuth: []
+      responses:
+        "200":
+          description: OK
+      operationId: webhookStampSlotAchievement
+      description: When Perx is receiving a stamp slot achievement event, this webhook
+        will be called
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WebHookRequest"
+servers:
+  - description: domain name within VPN
+    url: https://perx-gateway.apps.{env}.projectdrgn.com/v1
+    variables:
+      env:
+        enum:
+          - dev
+          - stg
+          - prod
+        default: dev
+  - description: local
+    url: http://localhost:8080/v1
+  - url: https://perx-gateway.apps.{env}.nonprod.c0.phx-infra.com/v1
+    variables:
+      env:
+        enum:
+          - dev
+          - stg
+          - prod
+        default: dev
+components:
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    Conflict:
+      description: The service wasn't able to fullfill request because of current state.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    UnprocessableEntity:
+      description: Validation error. Returned whenever request contains invalid values.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    InternalError:
+      description: Internal error
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    BadGateway:
+      description: An external service used by this endpoint has responded with an error.
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    ServiceUnavailable:
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+    ValidationError:
+      description: Validation Error
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - errorCode
+            properties:
+              errorCode:
+                type: string
+                description: refer to error code list per API
+              debugMessage:
+                type: string
+              validationErrors:
+                additionalProperties:
+                  type: object
+  schemas:
+    WebHookRequest:
+      title: WebHookRequest
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/WebHookUser"
+        event:
+          $ref: "#/components/schemas/WebHookEvent"
+        resource:
+          $ref: "#/components/schemas/WebHookResource"
+        timestamp:
+          type: string
+      x-examples: {}
+    WebHookUser:
+      title: WebHookUser
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        identifier:
+          type: string
+        alternate_id:
+          type: string
+    WebHookEvent:
+      title: WebHookEvent
+      type: object
+      properties:
+        name:
+          type: string
+        params:
+          type: object
+          additionalProperties:
+            type: object
+    WebHookReward:
+      title: WebHookReward
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+    WebHookCampaign:
+      title: WebHookCampaign
+      type: object
+      properties:
+        id:
+          type: integer
+          minimum: 1
+        name:
+          type: string
+    WebHookResource:
+      title: WebHookResource
+      properties:
+        type:
+          type: string
+          example: Reward::Transaction
+        data:
+          $ref: "#/components/schemas/WebHookData"
+    WebHookData:
+      allOf:
+        - title: WebHookData
+          type: object
+          properties:
+            id:
+              type: integer
+            issued_date:
+              type: string
+        - $ref: "#/components/schemas/WebHookVoucherData"
+        - $ref: "#/components/schemas/WebHookVoucherStampData"
+    WebHookVoucherData:
+      title: WebHookVoucherData
+      type: object
+      properties:
+        valid_to:
+          type: string
+        valid_from:
+          type: string
+        given_date:
+          type: string
+        redemption_date:
+          type: string
+        reservation_expires_at:
+          type: string
+        reward:
+          $ref: "#/components/schemas/WebHookReward"
+    WebHookVoucherStampData:
+      title: WebHookVoucherStampData
+      type: object
+      properties:
+        stamp_card_id:
+          type: integer
+        position_of_stamp:
+          type: integer
+        state:
+          type: string
+          example: issued
+        campaign:
+          $ref: "#/components/schemas/WebHookCampaign"
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+security:
+  - basicAuth: []
